@@ -1,0 +1,16 @@
+Entity_0: created
+Entity_0 added FirstComponent, fields[ x - 0 y - 1 ] at 0.010245
+Entity_0 added SecondComponent at 0.011052
+Entity_0 replaced FirstComponent, fields[ x - 2 y - 3 ] at 0.013241
+Entity_0: removed SecondComponent at 0.013552
+Entity_0: removed FirstComponent at 0.013838
+Entity_1: created
+Entity_1 added FirstComponent, fields[ x - 3 y - 3 ] at 0.014686
+Entity_1 replaced FirstComponent, fields[ x - 4 y - 5 ] at 0.014831
+Entity_1: removed FirstComponent at 0.014915
+Entity_1 added FirstComponent, fields[ x - 0 y - 0 ] at 0.015026
+Entity_1 added ThirdComponent, fields[ dict - System.Collections.Generic.Dictionary`2[System.String,System.Int32] ] at 0.015503
+Entity_1 replaced ThirdComponent, fields[ dict - System.Collections.Generic.Dictionary`2[System.String,System.Int32] ] at 0.015804
+Entity_1: removed ThirdComponent at 0.016056
+Entity_0: destroyed
+Entity_1: destroyed

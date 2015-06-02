@@ -18,7 +18,7 @@ namespace Entitas.Unity.CodeGenerator {
             Entitas.CodeGenerator.CodeGenerator.Generate(types, config.pools, config.generatedFolderPath);
             AssetDatabase.Refresh();
         }
-
+		//I did this :)
 		[MenuItem("Entitas/Test")]
 		public static void Test() {
 			String[] lines = File.ReadAllLines("Assets/Logs/2015-05-20_TestLog(7).txt");

@@ -93,6 +93,7 @@ public class AnalyticsWindow : EditorWindow , ClickResponder {
 														    new List<float>(){106.5f, 122.5f, 65f, 100f, 85f, 35.0f, 141.0f}};
 			chartLevelEngagement.dataLabels = new List<string> {"Level 1", "Level 2", "Level 3"};
 			chartLevelEngagement.axisLabels = new List<string> {"23 Feb", "24 Feb", "25 Feb", "26 Feb", "27 Feb", "28 Feb", "29 Feb"};
+			chartLevelEngagement.dataNodesLabels = new List<string> {"a", "b", "v", "g", "qj mi kura" , "opala"};
 			// Don't draw gridlines
 			chartLevelEngagement.gridLines = 0;
 			// Draw the chart

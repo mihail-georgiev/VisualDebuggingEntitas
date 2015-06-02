@@ -15,12 +15,16 @@ public class LineChart {
 	/// The labels of the data items.
 	/// </summary>
 	public List <string> dataLabels;
-	
+
+
+	public List<string> dataNodesLabels;
+
+
 	/// <summary>
 	/// The labels on the axis.
 	/// </summary>
 	public List <string> axisLabels;
-	
+
 	/// <summary>
 	/// The distance between each bar.
 	/// </summary>
@@ -253,7 +257,7 @@ public class LineChart {
 				Handles.DrawSolidDisc(previousLine - (Vector2.up * 0.5f), Vector3.forward, pipRadius * 2);
 				if (valueViewMode == ViewMode.ON_SELECT) {
 					selectRect.y -= 16; selectRect.width += 50; selectRect.x -= 25;
-					GUI.Label(selectRect, string.Format(formatString, data[i]), centeredStyle);				
+					GUI.Label(selectRect, string.Format(formatString, dataNodesLabels[i]), centeredStyle);				
 				}
 				// Listen for click
 				if (clickResponder != null &&  Event.current.button == 0 && Event.current.isMouse && Event.current.type == EventType.MouseDown) {

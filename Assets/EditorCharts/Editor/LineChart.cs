@@ -17,7 +17,7 @@ public class LineChart {
 	public List <string> dataLabels;
 
 
-	public List<string> dataNodesLabels;
+	public List<string>[] dataNodesLabels;
 
 
 	/// <summary>
@@ -210,7 +210,7 @@ public class LineChart {
 			int c = 0;
 			for (int i = 0; i < data.Length; i++) {
 				if (data[i] != null) {
-					DrawLine (data[i], colors[c++], i < dataLabels.Count ? dataLabels[i] : "");
+					DrawLine (data[i], dataNodesLabels[i], colors[c++], i < dataLabels.Count ? dataLabels[i] : "");
 					if (c > colors.Count - 1) c = 0;
 				}
 			}
@@ -237,7 +237,7 @@ public class LineChart {
 		}
 	}
 	
-	private void DrawLine(List<float> data, Color color, string label) {
+	private void DrawLine(List<float> data, List<string> dataNodesLabels, Color color, string label) {
 		Vector2 previousLine = Vector2.zero;
 		Vector2 newLine;
 		Handles.color = color;

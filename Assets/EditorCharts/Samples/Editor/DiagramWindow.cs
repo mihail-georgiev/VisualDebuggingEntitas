@@ -11,7 +11,8 @@ public class DiagramWindow : EditorWindow , ClickResponder {
 	
 
 	LineChart entityDiagram;
-	
+	Dictionary<String, List<String>> entityEntries;
+
  	GUIStyle boxStyle;
 	
     [MenuItem ("Entitas/ShowDiagram")]
@@ -39,37 +40,68 @@ public class DiagramWindow : EditorWindow , ClickResponder {
 			if (entityDiagram == null) {
 				entityDiagram = new LineChart(this, 100.0f);
 			}
-
-			String[] lines = File.ReadAllLines("Assets/Logs/2015-05-20_TestLog(7).txt");
-			Dictionary<String, List<String>> entityEntries = new Dictionary<String, List<String>>();
 			
-			foreach (String line in lines)
-			{
-				String[] split = line.Split(':');
-				
-				if (!entityEntries.ContainsKey(split[0]))
-				{
-					entityEntries.Add(split[0], new List<string>());
-				}
-				if(split.Length>1)
-					entityEntries[split[0]].Add(split[1]);
-				
-			}
+		generateDataDictionary();
+		generateChartValues();
 
-			List<string> dataNodes = entityEntries["Entity_0"];
-			List<float> entries = new List<float>();
-			for(int i =0; i<dataNodes.Capacity;i++)
-			{
-				entries.Add(0.0f + i);
-			}
-			entityDiagram.data = new List<float>[] {entries};
-			entityDiagram.dataNodesLabels = dataNodes;
 
+//			List<string> dataNodes = entityEntries["Entity_0"];
+//			List<float> entries = new List<float>();
+//			for(int i =0; i<dataNodes.Capacity;i++)
+//			{
+//				entries.Add(0.0f + i);
+//			}
+//			entityDiagram.data = new List<float>[] {entries};
+//			entityDiagram.dataNodesLabels = dataNodes;
+//
 			entityDiagram.DrawChart();
 	}
 	
 	public void Click(object chart, string label, float value) {
 		Debug.Log("Clicked on " + chart.GetType() + " with label " + label + " and value: " + value);	
+	}
+
+	void generateDataDictionary()
+	{
+		String[] lines = File.ReadAllLines("Assets/Logs/2015-06-02_TestLog(14).txt");
+		entityEntries = new Dictionary<String, List<String>>();
+		
+		foreach (String line in lines)
+		{
+			String[] split = line.Split(':');
+			
+			if (!entityEntries.ContainsKey(split[0]))
+			{
+				entityEntries.Add(split[0], new List<string>());
+			}
+			if(split.Length>1)
+				entityEntries[split[0]].Add(split[1]);
+			
+		}
+	}
+
+	void generateChartValues()
+	{	
+		List<string>[] nodesData = new List<string>[entityEntries.Count];
+		List<float>[] nodesTimeStamps = new List<float>[entityEntries.Count];
+		string[] separators = new string[]{" at "};
+		int index = 0;
+		foreach(KeyValuePair<String, List<String>> pair in entityEntries)
+		{
+			nodesData[index] = new List<string>();
+			nodesTimeStamps[index] = new List<float>();
+			foreach(string dataNode in pair.Value)
+			{	
+				string[] split = dataNode.Split(separators,StringSplitOptions.None);
+				nodesData[index].Add(split[0]);
+				Debug.Log(split[1]);
+				nodesTimeStamps[index].Add(float.Parse(split[1])+ index*4);
+			}
+			index++;
+		}
+		entityDiagram.data = nodesTimeStamps;
+		entityDiagram.dataNodesLabels = nodesData;
+
 	}
 	
 	// Use this if you want real time updating

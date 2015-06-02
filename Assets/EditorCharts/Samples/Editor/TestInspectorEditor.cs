@@ -13,23 +13,23 @@ public class TestInspectorEditor : Editor {
 	private List<float> numbers;
 
 	override public void OnInspectorGUI() {
-		if (numbers == null) numbers = new List<float>(){0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f};
-
-		// Enable this to check more frequently
-		// if (EditorApplication.update != this.EditorUpdate) EditorApplication.update += this.EditorUpdate;
-//		if (EditorApplication.isPlaying && !EditorApplication.isPaused) numbers.Add((float)((TestInspector)target).random);
-//		if (numbers.Count > 100) numbers.RemoveAt(0);
-		if (lineChart == null) {
-			lineChart = new LineChart(this, 200.0f);
-		}
-		lineChart.data = new List<float>[]{numbers};
-		lineChart.dataNodesLabels = new List<string>(){"A","q","w","e","r","t","y"};
-		lineChart.pipRadius = 1.0f;
-		lineChart.drawTicks = false;
-		// Make sure you do this or the cahrts wont work
-		Handles.BeginGUI();
-		lineChart.DrawChart();
-		Handles.EndGUI();
+//		if (numbers == null) numbers = new List<float>(){0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f};
+//
+//		// Enable this to check more frequently
+//		// if (EditorApplication.update != this.EditorUpdate) EditorApplication.update += this.EditorUpdate;
+////		if (EditorApplication.isPlaying && !EditorApplication.isPaused) numbers.Add((float)((TestInspector)target).random);
+////		if (numbers.Count > 100) numbers.RemoveAt(0);
+//		if (lineChart == null) {
+//			lineChart = new LineChart(this, 200.0f);
+//		}
+//		lineChart.data = new List<float>[]{numbers};
+//		lineChart.dataNodesLabels = new List<string>(){"A","q","w","e","r","t","y"};
+//		lineChart.pipRadius = 1.0f;
+//		lineChart.drawTicks = false;
+//		// Make sure you do this or the cahrts wont work
+//		Handles.BeginGUI();
+//		lineChart.DrawChart();
+//		Handles.EndGUI();
 	
 		
 	}

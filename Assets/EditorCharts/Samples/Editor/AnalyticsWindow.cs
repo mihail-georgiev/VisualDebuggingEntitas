@@ -88,11 +88,11 @@ public class AnalyticsWindow : EditorWindow , ClickResponder {
 				chartLevelEngagement = new LineChart(this, 200.0f);
 			}
 			// Set up three lines
-			chartLevelEngagement.data = new List<float>[] { new List<float>(){126.5f, 92.5f, 85f, 75f, 85f, 55.0f, 41.0f}, 
+			chartLevelEngagement.entryTimeStampsList = new List<float>[] { new List<float>(){126.5f, 92.5f, 85f, 75f, 85f, 55.0f, 41.0f}, 
 															new List<float>(){12.5f, 75f, 100f, 85f, 25.0f, 141.0f},
 														    new List<float>(){106.5f, 122.5f, 65f, 100f, 85f, 35.0f, 141.0f}};
 			chartLevelEngagement.dataLabels = new List<string> {"Level 1", "Level 2", "Level 3"};
-			chartLevelEngagement.axisLabels = new List<string> {"23 Feb", "24 Feb", "25 Feb", "26 Feb", "27 Feb", "28 Feb", "29 Feb"};
+			chartLevelEngagement.axisLabels = new List<string> {"23 Feb", "24 Feb", "25 Feb", "26 Feb", "27 Feb"};
 			chartLevelEngagement.dataNodesLabels = new List<string>[]{ new List<string>(){"a", "b", "v", "g", "qj mi kura" , "opala"},
 																	   new List<string>(){"fd", "bl", "vly", "gtt", "qj mi kura" , "opala"},
 																		new List<string>(){"aj", "sdf", "v", "gui", "qj mi kura" , "opala"}};

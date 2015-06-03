@@ -14,7 +14,11 @@ public class DiagramWindow : EditorWindow , ClickResponder {
 	Dictionary<String, List<String>> entityEntries;
 
  	GUIStyle boxStyle;
-	
+
+	float step = 0.001f;
+	float max,min;
+	float lastTimeStamp;
+	int ticks;
     [MenuItem ("Entitas/ShowDiagram")]
     static void Init () {
         // Get existing open window or if none, make a new one:
@@ -38,23 +42,28 @@ public class DiagramWindow : EditorWindow , ClickResponder {
    void OnGUI () {
 
 			if (entityDiagram == null) {
-				entityDiagram = new LineChart(this, 100.0f);
+				entityDiagram = new LineChart(this, 300.0f);
 			}
 			
 		generateDataDictionary();
 		generateChartValues();
 
+		step = EditorGUILayout.FloatField ("Step", step);
+		min = EditorGUILayout.Slider ("Slider", min, 0, lastTimeStamp);
+		max = EditorGUILayout.Slider ("Slider1", max, min, lastTimeStamp*2);
+		ticks = (int)Math.Ceiling((max-min)/step);
+		entityDiagram.ticks = ticks;
+		entityDiagram.lastTime = lastTimeStamp;
+		entityDiagram.min = min;
+		entityDiagram.max = max;
+		List<string> axisLabels = new List<string>();
+		for(int i=0; i<=ticks;i++)
+		{
+			axisLabels.Add("" + (min + i * step));
+		}
+		entityDiagram.axisLabels = axisLabels;
 
-//			List<string> dataNodes = entityEntries["Entity_0"];
-//			List<float> entries = new List<float>();
-//			for(int i =0; i<dataNodes.Capacity;i++)
-//			{
-//				entries.Add(0.0f + i);
-//			}
-//			entityDiagram.data = new List<float>[] {entries};
-//			entityDiagram.dataNodesLabels = dataNodes;
-//
-			entityDiagram.DrawChart();
+		entityDiagram.DrawChart();
 	}
 	
 	public void Click(object chart, string label, float value) {
@@ -76,8 +85,10 @@ public class DiagramWindow : EditorWindow , ClickResponder {
 			}
 			if(split.Length>1)
 				entityEntries[split[0]].Add(split[1]);
-			
 		}
+		//get time of last entry
+		string last = lines[(lines.Length) - 1];
+		lastTimeStamp = float.Parse(last.Split(new String[]{":"," at "}, StringSplitOptions.None)[2]);
 	}
 
 	void generateChartValues()
@@ -94,12 +105,11 @@ public class DiagramWindow : EditorWindow , ClickResponder {
 			{	
 				string[] split = dataNode.Split(separators,StringSplitOptions.None);
 				nodesData[index].Add(split[0]);
-				Debug.Log(split[1]);
-				nodesTimeStamps[index].Add(float.Parse(split[1])+ index*4);
+				nodesTimeStamps[index].Add(float.Parse(split[1]));
 			}
 			index++;
 		}
-		entityDiagram.data = nodesTimeStamps;
+		entityDiagram.entryTimeStampsList = nodesTimeStamps;
 		entityDiagram.dataNodesLabels = nodesData;
 
 	}

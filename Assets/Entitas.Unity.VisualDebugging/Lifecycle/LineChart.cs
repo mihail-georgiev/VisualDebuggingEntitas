@@ -3,6 +3,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System;
 
 public class LineChart {
 
@@ -10,8 +12,6 @@ public class LineChart {
 
 	public List<string>[] entityLineNodeLabels;
 		
-	public List <string> axisLabels;
-
 	public float chartBorder_X = 45;
 
 	public float chartBorder_Y = 20;
@@ -38,31 +38,37 @@ public class LineChart {
 	public bool drawTicks = true;
 
 	//tickCount
-	public int ticks=10;
+	private int ticks=10;
 
-	public float lastTime= 0.02f;
+	private float lastTime= 0.02f;
 
-	public float min,max;
+	private float min = 0f;
+	private float max = 2f;
+	private float step = 0.005f;
 
 	private float barFloor ;
-	private float barTop;
+	private float chartTop;
 	private	float lineWidth;
 	private float dataMax;
 	
 	private EditorWindow window;
 	private Editor editor;
 	private float windowHeight;
+
+	private Dictionary<String, List<String>> entityEntries;
 	
 	public LineChart(Editor editor, float windowHeight){
 		this.editor = editor;
 		this.windowHeight = windowHeight;
-		axisLabels = new List<string>();
 	}
 
-	public LineChart(EditorWindow window, float windowHeight){
+	public LineChart(EditorWindow window){
+		generateDataDictionary();
+		generateChartValues();	
+		int linesToDraw = entityEntries.Count;
+		float height = linesToDraw*20> Screen.height/4 ? Screen.height/4 : 200;
 		this.window = window;
-		this.windowHeight = windowHeight;
-		axisLabels = new List<string>();
+		this.windowHeight = height;
 	}
 
 	public void DrawChart() {	
@@ -70,7 +76,7 @@ public class LineChart {
 		if (entityTimeStampsList.Length > 0) {
 			
 			Rect rect = GUILayoutUtility.GetRect(Screen.width, windowHeight);
-			barTop = rect.y + chartBorder_Y;
+			chartTop = rect.y + chartBorder_Y;
 			lineWidth = (float) (Screen.width - (chartBorder_X * 2)) / ticks;
 			barFloor = rect.y + rect.height - chartBorder_Y;
 
@@ -82,26 +88,25 @@ public class LineChart {
 				}
 			}
 
-			// Draw Axis
 			Handles.color = axisColor;
-	    	Handles.DrawLine(new Vector2(chartBorder_X, barTop), new Vector2(chartBorder_X, barFloor));
-			Handles.DrawLine(new Vector2(chartBorder_X, barFloor), new Vector2(Screen.width - chartBorder_X, barFloor));
+	    	drawAxis();
 			
 			GUIStyle centeredStyle = new GUIStyle();
 			centeredStyle.alignment = TextAnchor.UpperCenter;
 			centeredStyle.normal.textColor = fontColor;
 			
-			// Draw ticks and labels
-			for (int i = 0; i <= ticks; i++) {
-				if (i > 0 && drawTicks) Handles.DrawLine(new Vector2(chartBorder_X + (lineWidth * i), barFloor - 3), new Vector2(chartBorder_X + (lineWidth * i), barFloor + 3));
-				if (i < axisLabels.Count) {
-					Rect labelRect = new Rect(chartBorder_X + (lineWidth * i) - lineWidth / 2.0f, barFloor + 5, lineWidth, 16);			
-					GUI.Label(labelRect, axisLabels[i], centeredStyle);				
-				}
-			}
+			drawTicksAndLabels (centeredStyle);
 
 			Handles.color = Color.white;
 		}
+	}
+
+	public void drawControls()
+	{
+		step = EditorGUILayout.FloatField ("Time Step", step);
+		min = EditorGUILayout.Slider ("Start", min, 0, lastTime);
+		max = EditorGUILayout.Slider ("End", max, min, lastTime*2);
+		ticks = (int)Math.Ceiling((max-min)/step);
 	}
 	
 	private void DrawLine(List<float> timeStampList, List<string> dataNodesLabels, Color color, string label, int index) {
@@ -144,6 +149,67 @@ public class LineChart {
 			colorStyle.normal.textColor = color;
 			Rect labelRect = new Rect(1, previousLine.y - 8, 100, 16);			
 			GUI.Label(labelRect, label, colorStyle);				
+		}
+	}
+
+	void generateDataDictionary()
+	{
+		String[] lines = File.ReadAllLines("Assets/Logs/2015-06-02_TestLog(14).txt");
+		entityEntries = new Dictionary<String, List<String>>();
+		
+		foreach (string line in lines)
+		{
+			string[] split = line.Split(':');
+			
+			if (!entityEntries.ContainsKey(split[0]))
+			{
+				entityEntries.Add(split[0], new List<string>());
+			}
+			if(split.Length>1)
+				entityEntries[split[0]].Add(split[1]);
+		}
+		//get time of last entry
+		string last = lines[(lines.Length) - 1];
+		lastTime = float.Parse(last.Split(new string[]{":"," at "}, StringSplitOptions.None)[2]);
+	}
+	
+	void generateChartValues()
+	{	
+		List<string>[] nodesData = new List<string>[entityEntries.Count];
+		List<float>[] nodesTimeStamps = new List<float>[entityEntries.Count];
+		string[] separators = new string[]{" at "};
+		int index = 0;
+		foreach(KeyValuePair<String, List<String>> pair in entityEntries)
+		{
+			nodesData[index] = new List<string>();
+			nodesTimeStamps[index] = new List<float>();
+			foreach(string dataNode in pair.Value)
+			{	
+				string[] split = dataNode.Split(separators,StringSplitOptions.None);
+				nodesData[index].Add(split[0]);
+				nodesTimeStamps[index].Add(float.Parse(split[1]));
+			}
+			index++;
+		}
+		entityTimeStampsList = nodesTimeStamps;
+		entityLineNodeLabels = nodesData;
+		
+	}
+
+	void drawAxis ()
+	{
+		Handles.DrawLine (new Vector2 (chartBorder_X, chartTop), new Vector2 (chartBorder_X, barFloor));
+		Handles.DrawLine (new Vector2 (chartBorder_X, barFloor), new Vector2 (Screen.width - chartBorder_X, barFloor));
+	}
+
+	void drawTicksAndLabels (GUIStyle centeredStyle)
+	{
+		for (int i = 0; i <= ticks; i++) {
+			if (i > 0 && drawTicks)
+				Handles.DrawLine (new Vector2 (chartBorder_X + (lineWidth * i), barFloor - 3), new Vector2 (chartBorder_X + (lineWidth * i), barFloor + 3));
+
+			Rect labelRect = new Rect (chartBorder_X + (lineWidth * i) - lineWidth / 2.0f, barFloor + 5, lineWidth, 16);
+			GUI.Label (labelRect, "" + (min + i * step), centeredStyle);
 		}
 	}
 }

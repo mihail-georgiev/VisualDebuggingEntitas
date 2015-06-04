@@ -15,10 +15,16 @@ public class DiagramWindow : EditorWindow , ClickResponder {
 
  	GUIStyle boxStyle;
 
+	Vector2 scrollPos = Vector2.zero;
+	string scrollText = "";
+
+
 	float step = 0.001f;
 	float max,min;
 	float lastTimeStamp;
-	int ticks;
+	int ticks ;
+
+	bool showDiagram = false;
     [MenuItem ("Entitas/ShowDiagram")]
     static void Init () {
         // Get existing open window or if none, make a new one:
@@ -40,22 +46,25 @@ public class DiagramWindow : EditorWindow , ClickResponder {
     }
 	
    void OnGUI () {
-
-			if (entityDiagram == null) {
-				entityDiagram = new LineChart(this, 300.0f);
-			}
-			
 		generateDataDictionary();
-		generateChartValues();
 
+		int linesToDraw = entityEntries.Count;
+		float height = linesToDraw*20> Screen.height/4 ? Screen.height/4 : 200;
+		if (entityDiagram == null) {
+				entityDiagram = new LineChart(this, height);
+
+			}
+		generateChartValues();	
 		step = EditorGUILayout.FloatField ("Step", step);
 		min = EditorGUILayout.Slider ("Slider", min, 0, lastTimeStamp);
 		max = EditorGUILayout.Slider ("Slider1", max, min, lastTimeStamp*2);
 		ticks = (int)Math.Ceiling((max-min)/step);
+
 		entityDiagram.ticks = ticks;
 		entityDiagram.lastTime = lastTimeStamp;
 		entityDiagram.min = min;
 		entityDiagram.max = max;
+		entityDiagram.clickResponder = this;
 		List<string> axisLabels = new List<string>();
 		for(int i=0; i<=ticks;i++)
 		{
@@ -63,11 +72,31 @@ public class DiagramWindow : EditorWindow , ClickResponder {
 		}
 		entityDiagram.axisLabels = axisLabels;
 
-		entityDiagram.DrawChart();
+		if(GUILayout.Button("Draw Chart"))
+		{
+			if(showDiagram)
+				showDiagram = false;
+			else
+				showDiagram = true;
+		}
+
+		if(showDiagram)
+		{
+			entityDiagram.DrawChart();
+		}
+		EditorGUILayout.BeginHorizontal();
+		scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width( Screen.width), GUILayout.Height(Screen.height/3) );
+		GUILayout.Label(scrollText);
+		EditorGUILayout.EndScrollView();
+		EditorGUILayout.EndHorizontal();
+		if(GUILayout.Button("Clear"))
+		{
+			scrollText = "Click on line point to view it\n";
+		}
 	}
 	
-	public void Click(object chart, string label, float value) {
-		Debug.Log("Clicked on " + chart.GetType() + " with label " + label + " and value: " + value);	
+	public void Click(string label, float value, int index) {
+		scrollText += "Clicked on Entity_" + index + " event: " + label + " at: " + value + "\n";
 	}
 
 	void generateDataDictionary()

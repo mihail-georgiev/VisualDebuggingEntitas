@@ -18,6 +18,6 @@ public interface ClickResponder {
 	/// <param name='value'>
 	/// Value of the area that was clicked.
 	/// </param>
-	void Click(object chart, string label, float value);
+	void Click(string label, float value, int index);
 	
 }

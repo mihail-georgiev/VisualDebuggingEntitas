@@ -70,7 +70,7 @@ public class LineChart {
 	/// <summary>
 	/// Size of the pips that occur at each data point. Use 1 or smaller to draw straight lines.
 	/// </summary>
-	public float pipRadius = 4.0f;
+	public float pipRadius = 3.0f;
 
 	public bool drawTicks = true;
 
@@ -179,8 +179,8 @@ public class LineChart {
 		Handles.color = color;
 		
 		for (int i = 0; i < timeStampList.Count; i++) {
-			float end = xBorder + ((timeStampList[i]-min)/(max-min))*(Screen.width - xBorder); //(timeStampList[i]/(max-min))*(Screen.width - xBorder);
-			newLine = new Vector2( (end), -index*20+250); //lineTop
+			float end = xBorder + ((timeStampList[i]-min)/(max-min))*(Screen.width - xBorder);
+			newLine = new Vector2( (end), -(index+1)*20+barFloor);
 			if(timeStampList[i]<min || timeStampList[i]>max*1.1f){
 				previousLine = newLine;
 				continue;
@@ -196,14 +196,14 @@ public class LineChart {
 				GUIStyle centeredStyle = new GUIStyle();
 				centeredStyle.alignment = TextAnchor.UpperCenter;
 				centeredStyle.normal.textColor = fontColor;
-				Handles.DrawSolidDisc(previousLine - (Vector2.up * 0.5f), Vector3.forward, pipRadius * 2);
+				Handles.DrawSolidDisc(previousLine - (Vector2.up * 0.5f), Vector3.forward, pipRadius * 1.5f);
 				if (valueViewMode == ViewMode.ON_SELECT) {
 					selectRect.y -= 16; selectRect.width += 50; selectRect.x -= 25;
 					GUI.Label(selectRect, string.Format(formatString, dataNodesLabels[i]), centeredStyle);				
 				}
 				// Listen for click
 				if (clickResponder != null &&  Event.current.button == 0 && Event.current.isMouse && Event.current.type == EventType.MouseDown) {
-					clickResponder.Click(this, dataLabels[i], timeStampList[i]);
+					clickResponder.Click(dataNodesLabels[i], timeStampList[i], index);
 				}
 				if (window != null) window.Repaint();
 				if (editor != null) editor.Repaint();

@@ -4,14 +4,6 @@ using Entitas;
 using System.Collections.Generic;
 using System;
 
-public class AppUtils
-{
-//	public static startAppTime singleton = new startAppTime();
-	public static AppUtils singleton = new AppUtils();
-	public static DateTime startAppTime = DateTime.UtcNow;
-	public static LogWriter writer = LogWriter.Instance;
-}
-
 public class TestBehaviour : MonoBehaviour {
 	Pool pool;
 

@@ -71,6 +71,10 @@ public class LineChart {
 		this.windowHeight = height;
 	}
 
+	// napravi go da pokazva polsednoto zapisano vreme, sled tova v dve poleta da se zapishe ot koga do koga da pokaje grafikata (default ot nachaloto do kraq)
+	//posle vzemi ramkata ot-do i q razdeli na 10-15 ticka i chartai liniite koito popadat v taq ramka
+
+
 	public void DrawChart() {	
 		
 		if (entityTimeStampsList.Length > 0) {

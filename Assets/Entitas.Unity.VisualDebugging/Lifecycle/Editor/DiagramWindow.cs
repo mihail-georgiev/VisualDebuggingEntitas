@@ -46,7 +46,9 @@ public class DiagramWindow : EditorWindow , ClickResponder {
     }
 	
    void OnGUI () {
-		generateDataDictionary();
+		if(entityEntries == null){
+			generateDataDictionary();
+		}
 
 		int linesToDraw = entityEntries.Count;
 		float height = linesToDraw*20> Screen.height/4 ? Screen.height/4 : 200;
@@ -55,6 +57,7 @@ public class DiagramWindow : EditorWindow , ClickResponder {
 
 			}
 		generateChartValues();	
+	
 		step = EditorGUILayout.FloatField ("Step", step);
 		min = EditorGUILayout.Slider ("Slider", min, 0, lastTimeStamp);
 		max = EditorGUILayout.Slider ("Slider1", max, min, lastTimeStamp*2);
@@ -138,8 +141,8 @@ public class DiagramWindow : EditorWindow , ClickResponder {
 			}
 			index++;
 		}
-		entityDiagram.entryTimeStampsList = nodesTimeStamps;
-		entityDiagram.dataNodesLabels = nodesData;
+		entityDiagram.entityTimeStampsList = nodesTimeStamps;
+		entityDiagram.entityLineNodeLabels = nodesData;
 
 	}
 	

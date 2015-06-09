@@ -33,6 +33,8 @@ public class LineChart {
 	
 	float pipRadius = 3.0f;
 
+	float internTimeFrom, internTimeTo;
+
 	public ClickResponder clickResponder;
 
 	public LineChart(EditorWindow window)
@@ -51,7 +53,7 @@ public class LineChart {
 		timeFrameFrom = EditorGUILayout.Slider ("Time Frame Begin (ms):", timeFrameFrom, 0, lastRecordedTime);
 		timeFrameTo = EditorGUILayout.Slider ("Time Frame End (ms):", timeFrameTo, timeFrameFrom, lastRecordedTime+2);
 		chartSections = EditorGUILayout.IntField ("Sections", chartSections);
-		timeStep = (timeFrameTo-timeFrameFrom)/chartSections;
+
 	}
 
 	public void DrawChart()
@@ -63,6 +65,12 @@ public class LineChart {
 	    	drawAxis();
 			drawSectionsAndLabels();
 		}
+	}
+	public void Update()
+	{
+		internTimeFrom = timeFrameFrom;
+		internTimeTo = timeFrameTo;
+		timeStep = (timeFrameTo-timeFrameFrom)/chartSections;
 	}
 
 	void creteChartRect()
@@ -106,7 +114,7 @@ public class LineChart {
 				Handles.DrawLine (new Vector2 (chartBorderHorizontal + (sectionWidth * i), chartFloor - 3), new Vector2 (chartBorderHorizontal + (sectionWidth * i), chartFloor + 3));
 			
 			Rect labelRect = new Rect (chartBorderHorizontal + (sectionWidth * i) - sectionWidth / 2.0f, chartFloor + 5, sectionWidth, 16);
-			GUI.Label(labelRect, "" + (timeFrameFrom + i * timeStep) + "ms", centeredStyle);
+			GUI.Label(labelRect, "" + (internTimeFrom + i * timeStep) + "ms", centeredStyle);
 		}
 	}
 
@@ -117,11 +125,14 @@ public class LineChart {
 		Handles.color = color;
 		
 		for (int i = 0; i < timeStampList.Count; i++)
-		{
-			float lineX = chartBorderHorizontal + ((timeStampList[i]-timeFrameFrom)/(timeFrameTo-timeFrameFrom))*(Screen.width - chartBorderHorizontal);
+		{	
+			if(timeStampList[i] > internTimeTo+2)
+				break;
+
+			float lineX = chartBorderHorizontal + ((timeStampList[i]-internTimeFrom)/(internTimeTo-internTimeFrom))*(Screen.width - chartBorderHorizontal);
 			float lineY = -(index+1)*20+chartFloor;
 			newLine = new Vector2( lineX, lineY);
-			if(timeStampList[i] < timeFrameFrom)
+			if(timeStampList[i] < internTimeFrom)
 			{
 				previousLine = newLine;
 				continue;

@@ -45,10 +45,17 @@ public class DiagramWindow : EditorWindow , ClickResponder {
 		{
 			if(showDiagram)
 				showDiagram = false;
-			else
+			else {
 				showDiagram = true;
+				entityDiagram.Update();
+			}
 		}
 
+		if(GUILayout.Button("Update Chart"))
+		{
+			entityDiagram.Update();
+		}
+		
 		if(showDiagram)
 		{
 			entityDiagram.DrawChart();

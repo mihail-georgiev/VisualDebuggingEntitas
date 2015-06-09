@@ -18,7 +18,7 @@ public class LineChart {
 	float chartTop;
 
 	float timeFrameFrom = 0f;
-	float timeFrameTo = 2f;
+	float timeFrameTo = 100f;
 	float timeStep;
 
 	Dictionary<String, List<String>> entityEntries;
@@ -49,7 +49,7 @@ public class LineChart {
 	{
 		EditorGUILayout.HelpBox("Last Entry recorded at: " + lastRecordedTime + " ms", MessageType.None);
 		timeFrameFrom = EditorGUILayout.Slider ("Time Frame Begin (ms):", timeFrameFrom, 0, lastRecordedTime);
-		timeFrameTo = EditorGUILayout.Slider ("Time Frame End (ms):", timeFrameTo, timeFrameFrom, lastRecordedTime*2);
+		timeFrameTo = EditorGUILayout.Slider ("Time Frame End (ms):", timeFrameTo, timeFrameFrom, lastRecordedTime+2);
 		chartSections = EditorGUILayout.IntField ("Sections", chartSections);
 		timeStep = (timeFrameTo-timeFrameFrom)/chartSections;
 	}
@@ -106,7 +106,7 @@ public class LineChart {
 				Handles.DrawLine (new Vector2 (chartBorderHorizontal + (sectionWidth * i), chartFloor - 3), new Vector2 (chartBorderHorizontal + (sectionWidth * i), chartFloor + 3));
 			
 			Rect labelRect = new Rect (chartBorderHorizontal + (sectionWidth * i) - sectionWidth / 2.0f, chartFloor + 5, sectionWidth, 16);
-			GUI.Label (labelRect, "" + (timeFrameFrom + i * timeStep), centeredStyle);
+			GUI.Label(labelRect, "" + (timeFrameFrom + i * timeStep) + "ms", centeredStyle);
 		}
 	}
 
@@ -166,8 +166,10 @@ public class LineChart {
 	}
 
 	void readEntriesDataFromFile()
-	{
-		String[] lines = File.ReadAllLines("Assets/Logs/2015-06-09_TestLog(11).txt");
+	{	
+		string[] allLogFiles = Directory.GetFiles("Assets/Logs/", "*.txt");
+		string lastLogFilePath = allLogFiles[allLogFiles.Length-1];
+		String[] lines = File.ReadAllLines(lastLogFilePath);
 		entityEntries = new Dictionary<String, List<String>>();
 		
 		foreach (string line in lines)

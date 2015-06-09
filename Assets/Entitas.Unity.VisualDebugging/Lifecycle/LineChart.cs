@@ -12,7 +12,7 @@ public class LineChart {
 
 	public List<string>[] entityLineNodeLabels;
 		
-	public float chartBorder_X = 45;
+	public float chartBorder_X = 60;
 
 	public float chartBorder_Y = 20;
 	
@@ -66,14 +66,10 @@ public class LineChart {
 		generateDataDictionary();
 		generateChartValues();	
 		int linesToDraw = entityEntries.Count;
-		float height = linesToDraw*20> Screen.height/4 ? Screen.height/4 : 200;
+		float height = linesToDraw*20 +100;//linesToDraw*20> Screen.height/4 ? Screen.height/4 : 200;
 		this.window = window;
 		this.windowHeight = height;
 	}
-
-	// napravi go da pokazva polsednoto zapisano vreme, sled tova v dve poleta da se zapishe ot koga do koga da pokaje grafikata (default ot nachaloto do kraq)
-	//posle vzemi ramkata ot-do i q razdeli na 10-15 ticka i chartai liniite koito popadat v taq ramka
-
 
 	public void DrawChart() {	
 		
@@ -107,10 +103,11 @@ public class LineChart {
 
 	public void drawControls()
 	{
-		step = EditorGUILayout.FloatField ("Time Step", step);
+		EditorGUILayout.HelpBox("Last Entry recorded at: " + lastTime + " ms", MessageType.None);
 		min = EditorGUILayout.Slider ("Start", min, 0, lastTime);
 		max = EditorGUILayout.Slider ("End", max, min, lastTime*2);
-		ticks = (int)Math.Ceiling((max-min)/step);
+		ticks = EditorGUILayout.IntField ("Ticks", ticks);
+		step = (max-min)/ticks;
 	}
 	
 	private void DrawLine(List<float> timeStampList, List<string> dataNodesLabels, Color color, string label, int index) {
@@ -158,7 +155,7 @@ public class LineChart {
 
 	void generateDataDictionary()
 	{
-		String[] lines = File.ReadAllLines("Assets/Logs/2015-06-02_TestLog(14).txt");
+		String[] lines = File.ReadAllLines("Assets/Logs/2015-06-09_TestLog(11).txt");
 		entityEntries = new Dictionary<String, List<String>>();
 		
 		foreach (string line in lines)

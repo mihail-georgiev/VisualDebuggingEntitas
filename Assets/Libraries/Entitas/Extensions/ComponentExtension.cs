@@ -6,7 +6,7 @@ namespace Entitas {
 
 		public static string DebugInfo(this IComponent component, int entityIndex, string eventType, DateTime time){
 		
-			double timePassed = (time - AppUtils.startAppTime).TotalSeconds;
+			double timePassed = (time - AppUtils.startAppTime).TotalMilliseconds;
 
 			if(eventType == "removed")
 				return "Entity_" + entityIndex + ": " + eventType + " " + component.GetType().ToString() + " at " + timePassed;

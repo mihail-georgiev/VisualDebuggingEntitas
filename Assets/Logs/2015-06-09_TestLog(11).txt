@@ -1,16 +1,16 @@
-Entity_0: created at 6.585
-Entity_0: added FirstComponent, fields[ x - 0 y - 1 ] at 10.474
-Entity_0: added SecondComponent at 10.969
-Entity_0: replaced FirstComponent, fields[ x - 2 y - 3 ] at 11.53
-Entity_0: removed SecondComponent at 11.662
-Entity_0: removed FirstComponent at 12.07
-Entity_1: created at 12.086
-Entity_1: added FirstComponent, fields[ x - 3 y - 3 ] at 12.099
-Entity_1: replaced FirstComponent, fields[ x - 4 y - 5 ] at 12.121
-Entity_1: removed FirstComponent at 12.142
-Entity_1: added FirstComponent, fields[ x - 0 y - 0 ] at 12.823
-Entity_1: added ThirdComponent, fields[ dict - System.Collections.Generic.Dictionary`2[System.String,System.Int32] ] at 13.799
-Entity_1: replaced ThirdComponent, fields[ dict - System.Collections.Generic.Dictionary`2[System.String,System.Int32] ] at 14.291
-Entity_1: removed ThirdComponent at 14.463
-Entity_0: destroyed at 19.773
-Entity_1: destroyed at 20.321
+Entity_0: created at 5.578
+Entity_0: added FirstComponent, fields[ x - 0 y - 1 ] at 9.266
+Entity_0: added SecondComponent at 9.77
+Entity_0: replaced FirstComponent, fields[ x - 2 y - 3 ] at 10.393
+Entity_0: removed SecondComponent at 10.531
+Entity_0: removed FirstComponent at 10.941
+Entity_1: created at 10.959
+Entity_1: added FirstComponent, fields[ x - 3 y - 3 ] at 10.971
+Entity_1: replaced FirstComponent, fields[ x - 4 y - 5 ] at 10.993
+Entity_1: removed FirstComponent at 11.013
+Entity_1: added FirstComponent, fields[ x - 0 y - 0 ] at 11.593
+Entity_1: added ThirdComponent, fields[ dict - System.Collections.Generic.Dictionary`2[System.String,System.Int32] ] at 12.508
+Entity_1: replaced ThirdComponent, fields[ dict - System.Collections.Generic.Dictionary`2[System.String,System.Int32] ] at 12.995
+Entity_1: removed ThirdComponent at 13.162
+Entity_0: destroyed at 18.053
+Entity_1: destroyed at 18.566

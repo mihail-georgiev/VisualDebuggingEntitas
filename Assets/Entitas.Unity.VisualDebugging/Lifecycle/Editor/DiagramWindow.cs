@@ -34,7 +34,8 @@ public class DiagramWindow : EditorWindow , ClickResponder {
     }
 	
    void OnGUI () {
-		if (entityDiagram == null){
+		if (entityDiagram == null)
+		{
 			entityDiagram = new LineChart(this);
 		}
 		entityDiagram.drawControls();
@@ -52,6 +53,7 @@ public class DiagramWindow : EditorWindow , ClickResponder {
 		{
 			entityDiagram.DrawChart();
 		}
+
 		EditorGUILayout.BeginHorizontal();
 			scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width( Screen.width), GUILayout.Height(Screen.height/3) );
 			GUILayout.Label(scrollText);
@@ -64,12 +66,8 @@ public class DiagramWindow : EditorWindow , ClickResponder {
 		}
 	}
 	
-	public void Click(string label, float value, int index) {
+	public void Click(string label, float value, int index)
+	{
 		scrollText += "Clicked on Entity_" + index + " event: " + label + " at: " + value + "\n";
-	}
-
-	// Use this if you want real time updating
-	void EditorUpdate() {
-		Repaint();
 	}
 }

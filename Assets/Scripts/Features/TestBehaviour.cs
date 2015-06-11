@@ -3,34 +3,57 @@ using System.Collections;
 using Entitas;
 using System.Collections.Generic;
 using System;
+using Entitas.Unity.VisualDebugging;
 
 public class TestBehaviour : MonoBehaviour {
-	Pool pool;
+	Pool _pool;
+	IStartSystem[] _startSystems;
+	IExecuteSystem[] _executeSystems;
 
 	void Start () {
-		pool = new Pool(CoreComponentIds.TotalComponents);
-		Entity e = pool.CreateEntity();
-		e.AddFirst(0,1);
-		e.isSecond = true;
-		e.ReplaceFirst(2f,3);
-		e.isSecond = false;
-		e.RemoveFirst();
+		#if (UNITY_EDITOR)
+		_pool = new DebugPool(ComponentIds.TotalComponents);
+		#else
+		_pool = new Pool(ComponentIds.TotalComponents);
+		#endif
+		
+		createStartSystems();
+		startSystems();
+		createExecuteSystems();
+		
 
-		e = pool.CreateEntity();
-		e.AddFirst(3f,3);
-		e.ReplaceFirst(4f,5);
-		e.RemoveFirst();
-		e.ReplaceFirst(0,0);
-		e.AddThird(new Dictionary<string, int>());
-		Dictionary<string, int> newDict = new Dictionary<string, int>();
-		newDict.Add("aaaa",4);
-		e.ReplaceThird(newDict);
-		e.RemoveThird();
-		pool.DestroyAllEntities();
 	}
-	
-	void Update () {
 
+	void createStartSystems ()
+	{
+		_startSystems = new [] {
+			_pool.CreateStartSystem<CreatePlayerSystem>(),
+		};
+	}
+
+	void createExecuteSystems ()
+	{
+		_executeSystems = new []{
+			_pool.CreateExecuteSystem<PlayerInputSystem>(),
+			_pool.CreateExecuteSystem<PlayerMoveSystem>(),
+			_pool.CreateExecuteSystem<SpawnAsteroidsSystem>(),
+			_pool.CreateExecuteSystem<AsteroidMoveSystem>(),
+			_pool.CreateExecuteSystem<RenderPositionSystem>(),
+			_pool.CreateExecuteSystem<DestroyAsteroidsSystem>()
+		};
+	}
+
+	void startSystems ()
+	{
+		foreach (var system in _startSystems) {
+			system.Start();
+		}
+	}
+
+	void Update () {
+		foreach (var system in _executeSystems) {
+			system.Execute();
+		}
 	}
 
 	void OnApplicationQuit()

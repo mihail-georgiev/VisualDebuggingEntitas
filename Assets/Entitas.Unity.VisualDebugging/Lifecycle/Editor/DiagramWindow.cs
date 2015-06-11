@@ -13,6 +13,7 @@ public class DiagramWindow : EditorWindow , ClickResponder {
  	GUIStyle boxStyle;
 
 	Vector2 scrollPos = Vector2.zero;
+	Vector2 scrollPos2 = Vector2.zero;
 	string scrollText = "";
 	bool showDiagram = false;
 
@@ -57,8 +58,12 @@ public class DiagramWindow : EditorWindow , ClickResponder {
 		}
 		
 		if(showDiagram)
-		{
+		{	
+			EditorGUILayout.BeginHorizontal();
+			scrollPos2 = EditorGUILayout.BeginScrollView(scrollPos2, GUILayout.Width( Screen.width), GUILayout.Height(Screen.height/3) );
 			entityDiagram.DrawChart();
+			EditorGUILayout.EndScrollView();
+			EditorGUILayout.EndHorizontal();
 		}
 
 		EditorGUILayout.BeginHorizontal();

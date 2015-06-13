@@ -18,7 +18,19 @@ public class PlayerMoveSystem : IReactiveSystem, ISetPool {
 	
 	public void Execute(Entity[] entities) {
 		var speed = entities.SingleEntity().playerMove;
-		var pos = _player.position;
-		_player.ReplacePosition(pos.x + speed.speedX, pos.y + speed.speedY);
+		var pos = newClampedPlayerPos(_player.position.x, _player.position.y, speed.speedX, speed.speedY);
+		_player.ReplacePosition(pos.x, pos.y);
+	}
+
+	Vector2 newClampedPlayerPos(float posX, float posY, float speedX, float speedY)
+	{
+		posX = posX + speedX;
+		posX = Mathf.Min(posX, 60f);
+		posX= Mathf.Max(posX, -60f);
+		posY = posY + speedY;
+		posY = Mathf.Min(posY, 43f);
+		posY = Mathf.Max(posY, -43f);
+
+		return new Vector2(posX, posY);
 	}
 }

@@ -38,6 +38,7 @@ public class TestBehaviour : MonoBehaviour {
 			_pool.CreateExecuteSystem<PlayerMoveSystem>(),
 			_pool.CreateExecuteSystem<SpawnAsteroidsSystem>(),
 			_pool.CreateExecuteSystem<AsteroidMoveSystem>(),
+			_pool.CreateExecuteSystem<HitDetectionSystem>(),
 			_pool.CreateExecuteSystem<RenderPositionSystem>(),
 			_pool.CreateExecuteSystem<DestroyAsteroidsSystem>()
 		};

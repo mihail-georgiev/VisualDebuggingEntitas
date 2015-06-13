@@ -10,7 +10,7 @@ public class SpawnAsteroidsSystem : IExecuteSystem, ISetPool {
 	
 	public void Execute() {
 		int inGameAsteroids = _pool.GetGroup(Matcher.AllOf(Matcher.Asteroid)).Count;
-		if(inGameAsteroids<10)
+		if(inGameAsteroids<8)
 		{	
 			Entity e = _pool.CreateEntity();
 			float posX = 60f;
@@ -19,7 +19,7 @@ public class SpawnAsteroidsSystem : IExecuteSystem, ISetPool {
 			e.AddPosition(posX,posY);
 			GameObject newAsteroid = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Asteroid"));
 			e.AddGameObject(newAsteroid);
-			e.AddAsteroidMove(Random.Range(0f,2f));
+			e.AddAsteroidMove(Random.Range(0f,1f));
 		}
 	}
 }

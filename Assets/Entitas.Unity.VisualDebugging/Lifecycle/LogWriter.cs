@@ -46,21 +46,28 @@ public class LogWriter
 		
 	private void FlushLog()
 	{
+		Log entry;
+		string logPath = "";
+		List<string> entries = new List<string>();
 		lock(logQueue)
 		{	
 			while (logQueue.Count > 0)
 			{
-				Log entry = logQueue.Dequeue();
-				string logPath = logDir + entry.LogDate + "_" + logFile;
-			
-				using (FileStream fs = File.Open(logPath, FileMode.Append, FileAccess.Write))
+				entry = logQueue.Dequeue();
+				logPath = logDir + entry.LogDate + "_" + logFile;
+				entries.Add(entry.Message);
+			}
+		}
+
+		foreach(string message in entries)
+		{
+			using (FileStream fs = File.Open(logPath, FileMode.Append, FileAccess.Write))
+			{
+				using (StreamWriter log = new StreamWriter(fs))
 				{
-					using (StreamWriter log = new StreamWriter(fs))
-					{
-						log.WriteLine(entry.Message);
-					}
+					log.WriteLine(message);
 				}
-			}            
+			}
 		}
 	}
 

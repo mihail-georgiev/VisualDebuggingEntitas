@@ -11,11 +11,17 @@ namespace Entitas.Unity.VisualDebugging {
     [CustomEditor(typeof(EntityDebugBehaviour)), CanEditMultipleObjects]
     public class EntityDebugEditor : Editor {
         GUIStyle _foldoutStyle;
+		static ITypeDrawer[] _typeDrawers;
 
         void Awake() {
             _foldoutStyle = new GUIStyle(EditorStyles.foldout);
             _foldoutStyle.fontStyle = FontStyle.Bold;
 
+			var types = Assembly.GetAssembly(typeof(EntityDebugEditor)).GetTypes();
+			_typeDrawers = types
+				.Where(type => type.GetInterfaces().Contains(typeof(ITypeDrawer)))
+				.Select(type => (ITypeDrawer)Activator.CreateInstance(type))
+				.ToArray();
         }
 
         public override void OnInspectorGUI() {
@@ -99,18 +105,65 @@ namespace Entitas.Unity.VisualDebugging {
             if (debugBehaviour.unfoldedComponents[index]) {
                 foreach (var field in fields) {
                     var value = field.GetValue(component);
-					drawUnsupportedType(field.FieldType, field.Name, value);
+					DrawAndSetElement(field.FieldType, field.Name, value,
+					                  entity, index, component, newValue => field.SetValue(component, newValue));
                 }
             }
             EditorGUILayout.EndVertical();
         }
 
+		public static void DrawAndSetElement(Type type, string fieldName, object value, Entity entity, int index, IComponent component, Action<object> setValue) {
+			var newValue = DrawAndGetNewValue(type, fieldName, value, entity, index, component);
+			if (didValueChange(value, newValue)) {
+				entity.WillRemoveComponent(index);
+				setValue(newValue);
+				entity.ReplaceComponent(index, component);
+			}
+		}
 
-        static void drawUnsupportedType(Type type, string fieldName, object value) {
+		static bool didValueChange(object value, object newValue) {
+			return (value == null && newValue != null) ||
+				(value != null && newValue == null) ||
+					((value != null && newValue != null &&
+					  !newValue.Equals(value)));
+		}
+
+		public static object DrawAndGetNewValue(Type type, string fieldName, object value, Entity entity, int index, IComponent component) {
+			
+			if (!type.IsValueType) {
+				EditorGUILayout.BeginHorizontal();
+				EditorGUILayout.BeginVertical();
+			}
+			var typeDrawer = getTypeDrawer(type);
+			if (typeDrawer != null) {
+				value = typeDrawer.DrawAndGetNewValue(type, fieldName, value, entity, index, component);
+			} else {
+				drawUnsupportedType(type, fieldName, value);
+			}
+
+			if (!type.IsValueType) {
+				EditorGUILayout.EndVertical();
+				EditorGUILayout.EndHorizontal();
+			}
+			
+			return value;
+		}
+		
+		static void drawUnsupportedType(Type type, string fieldName, object value) {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(fieldName, value.ToString());
             EditorGUILayout.EndHorizontal();
         }
+
+		static ITypeDrawer getTypeDrawer(Type type) {
+			foreach (var drawer in _typeDrawers) {
+				if (drawer.HandlesType(type)) {
+					return drawer;
+				}
+			}
+			
+			return null;
+		}
     }
 }
 

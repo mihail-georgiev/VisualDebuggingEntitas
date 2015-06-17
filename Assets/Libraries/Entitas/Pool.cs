@@ -34,8 +34,6 @@ namespace Entitas {
             entity._creationIndex = _creationIndex++;
             _entities.Add(entity);
             _entitiesCache = null;
-			double timePassed = (DateTime.UtcNow - AppUtils.startAppTime).TotalMilliseconds;
-			AppUtils.writer.WriteToLog("Entity_" + entity._creationIndex + ": created at " + timePassed);
             entity.OnComponentAdded += onComponentAddedOrRemoved;
             entity.OnComponentReplaced += onComponentReplaced;
             entity.OnComponentWillBeRemoved += onComponentWillBeRemoved;
@@ -52,8 +50,6 @@ namespace Entitas {
             _entities.Remove(entity);
             _entitiesCache = null;
             _entityPool.Push(entity);
-			double timePassed = (DateTime.UtcNow - AppUtils.startAppTime).TotalMilliseconds;
-			AppUtils.writer.WriteToLog("Entity_" + entity._creationIndex + ": destroyed at " + timePassed);
         }
 
         public virtual void DestroyAllEntities() {

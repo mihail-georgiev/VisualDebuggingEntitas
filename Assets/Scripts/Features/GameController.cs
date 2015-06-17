@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System;
 using Entitas.Unity.VisualDebugging;
 
-public class TestBehaviour : MonoBehaviour {
+public class GameController : MonoBehaviour {
 	Pool _pool;
 	IStartSystem[] _startSystems;
 	IExecuteSystem[] _executeSystems;

@@ -34,7 +34,6 @@ namespace Entitas {
             if (OnComponentAdded != null) {
                 OnComponentAdded(this, index, component);
             }
-			AppUtils.writer.WriteToLog(component.DebugInfo(creationIndex, "added", DateTime.UtcNow));
         }
 
         public void WillRemoveComponent(int index) {
@@ -48,9 +47,8 @@ namespace Entitas {
                 var errorMsg = "Cannot remove component at index " + index + " from " + this;
                 throw new EntityDoesNotHaveComponentException(errorMsg, index);
             }
-			AppUtils.writer.WriteToLog(_components[index].DebugInfo(creationIndex, "removed", DateTime.UtcNow));
-            removeComponent(index);
 
+			removeComponent(index);
         }
 
         void removeComponent(int index) {
@@ -86,8 +84,6 @@ namespace Entitas {
                     OnComponentReplaced(this, index, replacement);
                 }
             }
-			if(replacement !=null)
-				AppUtils.writer.WriteToLog(_components[index].DebugInfo(creationIndex, "replaced", DateTime.UtcNow));
         }
 
         public IComponent GetComponent(int index) {

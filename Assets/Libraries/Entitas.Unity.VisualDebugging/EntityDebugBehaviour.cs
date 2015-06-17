@@ -19,6 +19,9 @@ namespace Entitas.Unity.VisualDebugging {
             _unfoldedComponents = new bool[_pool.totalComponents];
             _entity.OnComponentAdded += onEntityChanged;
             _entity.OnComponentRemoved += onEntityChanged;
+			_entity.OnComponentAdded += logOnComponentAdded;
+			_entity.OnComponentReplaced += logOnComponentReplaced;
+			_entity.OnComponentRemoved += logOnComponentRemoved;
             updateName();
 
             UnfoldAllComponents();
@@ -52,8 +55,21 @@ namespace Entitas.Unity.VisualDebugging {
             }
         }
 
-        void updateName() {
-            name = _entity.ToString();
-        }
+		void logOnComponentAdded(Entity e, int index, IComponent component) {
+			AppUtils.writer.WriteToLog(component.DebugInfo(e.creationIndex, "added", System.DateTime.UtcNow));
+		}
+
+		void logOnComponentRemoved(Entity e, int index, IComponent component) {
+			AppUtils.writer.WriteToLog(component.DebugInfo(e.creationIndex, "removed", System.DateTime.UtcNow));
+		}
+
+		void logOnComponentReplaced(Entity e, int index, IComponent component) {
+			AppUtils.writer.WriteToLog(component.DebugInfo(e.creationIndex, "replaced", System.DateTime.UtcNow));
+		}
+
+		
+		void updateName() {
+			name = _entity.ToString();
+		}
     }
 }

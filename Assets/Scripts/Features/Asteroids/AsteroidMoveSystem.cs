@@ -9,8 +9,7 @@ public class AsteroidMoveSystem : IExecuteSystem, ISetPool {
 	}
 	
 	public void Execute() {
-		foreach(Entity e in _group.GetEntities())
-		{	
+		foreach(Entity e in _group.GetEntities()) {	
 			var move = e.asteroidMove;
 			var pos = e.position;
 			if(pos.x< -60f)
@@ -20,4 +19,3 @@ public class AsteroidMoveSystem : IExecuteSystem, ISetPool {
 		}
 	}
 }
-

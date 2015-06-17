@@ -10,8 +10,7 @@ public class SpawnAsteroidsSystem : IExecuteSystem, ISetPool {
 	
 	public void Execute() {
 		int inGameAsteroids = _pool.GetGroup(Matcher.AllOf(Matcher.Asteroid)).Count;
-		if(inGameAsteroids<8)
-		{	
+		if(inGameAsteroids<8) {	
 			Entity e = _pool.CreateEntity();
 			float posX = 60f;
 			float posY = Random.Range(-40f, 40f);

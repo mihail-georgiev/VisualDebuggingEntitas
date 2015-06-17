@@ -15,7 +15,5 @@ public class CreatePlayerSystem : IStartSystem, ISetPool {
 		e.AddGameObject(player);
 		e.AddPlayerMove(0f,0f);
 		e.AddPosition(-55f,0f);
-
 	}
 }
-

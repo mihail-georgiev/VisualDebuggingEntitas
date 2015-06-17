@@ -37,8 +37,7 @@ public class LineChart {
 
 	public ClickResponder clickResponder;
 
-	public LineChart(EditorWindow window)
-	{
+	public LineChart(EditorWindow window) {
 		readEntriesDataFromFile();
 		generateChartData();	
 		int linesToDraw = entityEntries.Count;
@@ -47,47 +46,39 @@ public class LineChart {
 		this.windowHeight = height;
 	}
 
-	public void drawControls()
-	{
+	public void drawControls() {
 		EditorGUILayout.HelpBox("Last Entry recorded at: " + lastRecordedTime + " ms", MessageType.None);
 		timeFrameFrom = EditorGUILayout.Slider ("Time Frame Begin (ms):", timeFrameFrom, 0, lastRecordedTime);
 		timeFrameTo = EditorGUILayout.Slider ("Time Frame End (ms):", timeFrameTo, timeFrameFrom, lastRecordedTime+2);
 		chartSections = EditorGUILayout.IntField ("Sections", chartSections);
-
 	}
 
-	public void DrawChart()
-	{	
-		if(entityNodesTimeStamps.Length > 0)
-		{
+	public void DrawChart() {	
+		if(entityNodesTimeStamps.Length > 0) {
 			creteChartRect ();
 			drawEntityLines ();
 	    	drawAxis();
 			drawSectionsAndLabels();
 		}
 	}
-	public void Update()
-	{
+
+	public void Update() {
 		internTimeFrom = timeFrameFrom;
 		internTimeTo = timeFrameTo;
 		timeStep = (timeFrameTo-timeFrameFrom)/chartSections;
 	}
 
-	void creteChartRect()
-	{
+	void creteChartRect() {
 		Rect rect = GUILayoutUtility.GetRect (Screen.width, windowHeight);
 		chartTop = rect.y + chartBorderVertikal;
 		sectionWidth = (float)(Screen.width - (chartBorderHorizontal * 2)) / chartSections;
 		chartFloor = rect.y + rect.height - chartBorderVertikal;
 	}
 
-	void drawEntityLines()
-	{
+	void drawEntityLines() {
 		int c = 0;
-		for (int i = 0; i < entityNodesTimeStamps.Length; i++)
-		{
-			if (entityNodesTimeStamps [i] != null)
-			{
+		for (int i = 0; i < entityNodesTimeStamps.Length; i++) {
+			if (entityNodesTimeStamps [i] != null) {
 				drawLine (entityNodesTimeStamps [i], entityLineNodeLabels [i], colors [c++], "Entity_" + i, i);
 				if (c > colors.Count - 1)
 					c = 0;
@@ -95,21 +86,18 @@ public class LineChart {
 		}
 	}
 
-	void drawAxis ()
-	{		
+	void drawAxis() {		
 		Handles.color = axisColor;
 		Handles.DrawLine (new Vector2 (chartBorderHorizontal, chartTop), new Vector2 (chartBorderHorizontal, chartFloor));
 		Handles.DrawLine (new Vector2 (chartBorderHorizontal, chartFloor), new Vector2 (Screen.width - chartBorderHorizontal, chartFloor));
 	}
 
-	void drawSectionsAndLabels()
-	{
+	void drawSectionsAndLabels() {
 		GUIStyle centeredStyle = new GUIStyle();
 		centeredStyle.alignment = TextAnchor.UpperCenter;
 		centeredStyle.normal.textColor = fontColor;
 		
-		for (int i = 0; i <= chartSections; i++)
-		{
+		for (int i = 0; i <= chartSections; i++) {
 			if (i > 0)
 				Handles.DrawLine (new Vector2 (chartBorderHorizontal + (sectionWidth * i), chartFloor - 3), new Vector2 (chartBorderHorizontal + (sectionWidth * i), chartFloor + 3));
 			
@@ -118,36 +106,31 @@ public class LineChart {
 		}
 	}
 
-	void drawLine(List<float> timeStampList, List<string> dataNodesLabels, Color color, string label, int index)
-	{
+	void drawLine(List<float> timeStampList, List<string> dataNodesLabels, Color color, string label, int index) {
 		Vector2 previousLine = Vector2.zero;
 		Vector2 newLine;
 		Handles.color = color;
 		
-		for (int i = 0; i < timeStampList.Count; i++)
-		{	
+		for (int i = 0; i < timeStampList.Count; i++) {	
 			if(timeStampList[i] > internTimeTo+2)
 				break;
 
 			float lineX = chartBorderHorizontal + ((timeStampList[i]-internTimeFrom)/(internTimeTo-internTimeFrom))*(Screen.width - chartBorderHorizontal);
 			float lineY = -(index+1)*20+chartFloor;
 			newLine = new Vector2( lineX, lineY);
-			if(timeStampList[i] < internTimeFrom)
-			{
+			if(timeStampList[i] < internTimeFrom) {
 				previousLine = newLine;
 				continue;
 			}
 	
-			if (i > 0) 
-			{
+			if (i > 0) {
 				previousLine.x = previousLine.x < chartBorderHorizontal ? chartBorderHorizontal: previousLine.x;
 				Handles.DrawAAPolyLine(previousLine, newLine);
 			}
 			previousLine = newLine;
 		
 			Rect selectRect = new Rect((previousLine - (Vector2.up * 0.5f)).x - pipRadius * 3, (previousLine - (Vector2.up * 0.5f)).y - pipRadius * 3, pipRadius * 6, pipRadius * 6);
-			if (selectRect.Contains(Event.current.mousePosition))
-			{
+			if (selectRect.Contains(Event.current.mousePosition)) {
 				GUIStyle centeredStyle = new GUIStyle();
 				centeredStyle.alignment = TextAnchor.UpperCenter;
 				centeredStyle.normal.textColor = fontColor;
@@ -157,38 +140,35 @@ public class LineChart {
 				if (clickResponder != null &&  Event.current.button == 0 && Event.current.isMouse && Event.current.type == EventType.MouseDown) {
 					clickResponder.Click(dataNodesLabels[i], timeStampList[i], index);
 				}
-				if (window != null) window.Repaint();
+				if (window != null)
+					window.Repaint();
 			} else {
 				Handles.DrawSolidDisc(previousLine - (Vector2.up * 0.5f), Vector3.forward, pipRadius);
 			}
-		}	
-		if (label != null)
-		{
+		}
+
+		if (label != null) {
 			drawEntityLineLabel(color, label, previousLine.y);
 		}
 	}
 
-	static void drawEntityLineLabel (Color color, string label, float lineHeight)
-	{
+	static void drawEntityLineLabel (Color color, string label, float lineHeight) {
 		GUIStyle colorStyle = new GUIStyle ();
 		colorStyle.normal.textColor = color;
 		Rect labelRect = new Rect (1, lineHeight - 8, 100, 16);
 		GUI.Label (labelRect, label, colorStyle);
 	}
 
-	void readEntriesDataFromFile()
-	{	
+	void readEntriesDataFromFile() {	
 		string[] allLogFiles = Directory.GetFiles("Assets/Logs/", "*.txt");
 		string lastLogFilePath = allLogFiles[allLogFiles.Length-1];
 		String[] lines = File.ReadAllLines(lastLogFilePath);
 		entityEntries = new Dictionary<String, List<String>>();
 		
-		foreach (string line in lines)
-		{
+		foreach (string line in lines) {
 			string[] split = line.Split(':');
 			
-			if (!entityEntries.ContainsKey(split[0]))
-			{
+			if (!entityEntries.ContainsKey(split[0])) {
 				entityEntries.Add(split[0], new List<string>());
 			}
 			if(split.Length>1)
@@ -199,14 +179,12 @@ public class LineChart {
 		lastRecordedTime = float.Parse(lastEntry.Split(new string[]{":"," at "}, StringSplitOptions.None)[2]);
 	}
 	
-	void generateChartData()
-	{	
+	void generateChartData() {	
 		List<string>[] nodesData = new List<string>[entityEntries.Count];
 		List<float>[] nodesTimeStamps = new List<float>[entityEntries.Count];
 		string[] separators = new string[]{" at "};
 		int index = 0;
-		foreach(KeyValuePair<String, List<String>> pair in entityEntries)
-		{
+		foreach(KeyValuePair<String, List<String>> pair in entityEntries) {
 			nodesData[index] = new List<string>();
 			nodesTimeStamps[index] = new List<float>();
 			foreach(string dataNode in pair.Value)

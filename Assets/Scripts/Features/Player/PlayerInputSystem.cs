@@ -8,8 +8,7 @@ public class PlayerInputSystem : IExecuteSystem, ISetPool {
 		_player = pool.playerEntity;
 	}
 	
-	public void Execute()
-	{	
+	public void Execute() {	
 		Vector2 speed = Vector2.zero;
 		if(Input.GetKey(KeyCode.UpArrow))
 		{

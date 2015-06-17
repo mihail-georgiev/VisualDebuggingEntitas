@@ -20,19 +20,15 @@ public class GameController : MonoBehaviour {
 		createStartSystems();
 		startSystems();
 		createExecuteSystems();
-		
-
 	}
 
-	void createStartSystems ()
-	{
+	void createStartSystems () {
 		_startSystems = new [] {
 			_pool.CreateStartSystem<CreatePlayerSystem>(),
 		};
 	}
 
-	void createExecuteSystems ()
-	{
+	void createExecuteSystems () {
 		_executeSystems = new []{
 			_pool.CreateExecuteSystem<PlayerInputSystem>(),
 			_pool.CreateExecuteSystem<PlayerMoveSystem>(),
@@ -44,8 +40,7 @@ public class GameController : MonoBehaviour {
 		};
 	}
 
-	void startSystems ()
-	{
+	void startSystems () {
 		foreach (var system in _startSystems) {
 			system.Start();
 		}
@@ -57,8 +52,7 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	void OnApplicationQuit()
-	{
+	void OnApplicationQuit() {
 		AppUtils.writer.CloseLog();
 	}
 }

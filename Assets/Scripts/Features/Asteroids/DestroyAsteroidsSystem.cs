@@ -2,7 +2,6 @@
 using UnityEngine;
 
 public class DestroyAsteroidsSystem : IReactiveSystem, ISetPool{
-
 	Pool _pool;
 
 	public IMatcher GetTriggeringMatcher() {

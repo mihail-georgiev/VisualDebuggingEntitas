@@ -4,8 +4,7 @@ using System.Configuration;
 using System.IO;
 using System.Threading;
 
-public class LogWriter
-{
+public class LogWriter {
 	private static LogWriter instance;
 	private static Queue<Log> logQueue;
 	private static string logDir = "Assets/Logs/";
@@ -18,12 +17,9 @@ public class LogWriter
 		logFile = "TestLog(" + count + ").txt";
 	}
 	
-	public static LogWriter Instance
-	{
-		get
-		{
-			if (instance == null)
-			{
+	public static LogWriter Instance {
+		get {
+			if (instance == null) {
 				instance = new LogWriter();
 				logQueue = new Queue<Log>();
 			}
@@ -31,59 +27,48 @@ public class LogWriter
 		}
 	}
 	
-	public void WriteToLog(string message)
-	{
+	public void WriteToLog(string message) {
 		Log logEntry = new Log(message);
 		logQueue.Enqueue(logEntry);
 				
-		if (logQueue.Count >= queueSize)
-		{
+		if (logQueue.Count >= queueSize) {
 			Thread t = new Thread(FlushLog);
 			t.Start();
 		}
 	}
 
 		
-	private void FlushLog()
-	{
+	private void FlushLog() {
 		Log entry;
 		string logPath = "";
 		List<string> entries = new List<string>();
-		lock(logQueue)
-		{	
-			while (logQueue.Count > 0)
-			{
+		lock(logQueue) {	
+			while (logQueue.Count > 0) {
 				entry = logQueue.Dequeue();
 				logPath = logDir + entry.LogDate + "_" + logFile;
 				entries.Add(entry.Message);
 			}
 		}
 
-		foreach(string message in entries)
-		{
-			using (FileStream fs = File.Open(logPath, FileMode.Append, FileAccess.Write))
-			{
-				using (StreamWriter log = new StreamWriter(fs))
-				{
+		foreach(string message in entries) {
+			using (FileStream fs = File.Open(logPath, FileMode.Append, FileAccess.Write)) {
+				using (StreamWriter log = new StreamWriter(fs)) {
 					log.WriteLine(message);
 				}
 			}
 		}
 	}
 
-	public void CloseLog()
-	{
+	public void CloseLog() {
 		FlushLog();
 	}
 }
 	
-public class Log
-{
+public class Log {
 	public string Message { get; set; }
 	public string LogDate { get; set; }
 
-	public Log(string message)
-	{
+	public Log(string message) {
 		Message = message;
 		LogDate = DateTime.Now.ToString("yyyy-MM-dd");
 	}

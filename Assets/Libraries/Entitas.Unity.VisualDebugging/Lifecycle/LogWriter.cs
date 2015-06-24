@@ -12,7 +12,6 @@ public class LogWriter {
 	private static int queueSize = int.Parse("10");
 
 	private LogWriter() {
-		UnityEngine.Debug.Log("LogWriter created");
 		int count = Directory.GetFiles(logDir,"*.txt").Length;
 		logFile = "TestLog(" + count + ").txt";
 	}

@@ -29,7 +29,6 @@ namespace Entitas.Unity.VisualDebugging {
 
         public override Entity CreateEntity() {
             var entity = base.CreateEntity();
-			Debug.Log("crate entity");
 			double timePassed = (System.DateTime.UtcNow - AppUtils.startAppTime).TotalMilliseconds;
 			AppUtils.writer.WriteToLog("Entity_" + entity._creationIndex + ": created at " + timePassed);
             addDebugComponent(entity);
@@ -71,7 +70,7 @@ namespace Entitas.Unity.VisualDebugging {
 
         void updateName() {
             if (_entitiesContainer != null) {
-                _entitiesContainer.name = string.Format(_name + " ({0} entities, {1} reusable, {2} groups)", Count, pooledEntitiesCount, groups.Count);
+                _entitiesContainer.name = string.Format(_name + " ({0} entities, {1} groups)", Count, groups.Count);
             }
         }
     }

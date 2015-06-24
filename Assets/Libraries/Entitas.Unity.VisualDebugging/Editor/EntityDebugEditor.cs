@@ -10,13 +10,9 @@ using UnityEngine;
 namespace Entitas.Unity.VisualDebugging {
     [CustomEditor(typeof(EntityDebugBehaviour)), CanEditMultipleObjects]
     public class EntityDebugEditor : Editor {
-        GUIStyle _foldoutStyle;
 		static ITypeDrawer[] _typeDrawers;
 
         void Awake() {
-            _foldoutStyle = new GUIStyle(EditorStyles.foldout);
-            _foldoutStyle.fontStyle = FontStyle.Bold;
-
 			var types = Assembly.GetAssembly(typeof(EntityDebugEditor)).GetTypes();
 			_typeDrawers = types
 				.Where(type => type.GetInterfaces().Contains(typeof(ITypeDrawer)))
@@ -45,12 +41,6 @@ namespace Entitas.Unity.VisualDebugging {
             EditorGUILayout.BeginVertical(GUI.skin.box);
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Components (" + entity.GetComponents().Length + ")", EditorStyles.boldLabel);
-            if (GUILayout.Button("▸", GUILayout.Width(21), GUILayout.Height(14))) {
-                debugBehaviour.FoldAllComponents();
-            }
-            if (GUILayout.Button("▾", GUILayout.Width(21), GUILayout.Height(14))) {
-                debugBehaviour.UnfoldAllComponents();
-            }
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space();
 
@@ -96,18 +86,14 @@ namespace Entitas.Unity.VisualDebugging {
             EditorGUILayout.BeginHorizontal();
             if (fields.Length == 0) {
                 EditorGUILayout.LabelField(componentType.RemoveComponentSuffix(), EditorStyles.boldLabel);
-            } else {
-                debugBehaviour.unfoldedComponents[index] = EditorGUILayout.Foldout(debugBehaviour.unfoldedComponents[index], componentType.RemoveComponentSuffix(), _foldoutStyle);
             }
 
             EditorGUILayout.EndHorizontal();
 
-            if (debugBehaviour.unfoldedComponents[index]) {
-                foreach (var field in fields) {
-                    var value = field.GetValue(component);
-					DrawAndSetElement(field.FieldType, field.Name, value,
-					                  entity, index, component, newValue => field.SetValue(component, newValue));
-                }
+            foreach (var field in fields) {
+	            var value = field.GetValue(component);
+				DrawAndSetElement(field.FieldType, field.Name, value,
+				                  entity, index, component, newValue => field.SetValue(component, newValue));
             }
             EditorGUILayout.EndVertical();
         }
@@ -166,4 +152,3 @@ namespace Entitas.Unity.VisualDebugging {
 		}
     }
 }
-

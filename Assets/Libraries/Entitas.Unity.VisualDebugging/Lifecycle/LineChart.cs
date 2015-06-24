@@ -35,7 +35,7 @@ public class LineChart {
 
 	float internTimeFrom, internTimeTo;
 
-	public ClickResponder clickResponder;
+	public string scrollText = "";
 
 	public LineChart(EditorWindow window) {
 		readEntriesDataFromFile();
@@ -137,8 +137,8 @@ public class LineChart {
 				Handles.DrawSolidDisc(previousLine - (Vector2.up * 0.5f), Vector3.forward, pipRadius * 1.5f);
 
 				// Listen for click
-				if (clickResponder != null &&  Event.current.button == 0 && Event.current.isMouse && Event.current.type == EventType.MouseDown) {
-					clickResponder.Click(dataNodesLabels[i], timeStampList[i], index);
+				if (Event.current.button == 0 && Event.current.isMouse && Event.current.type == EventType.MouseDown) {
+					scrollText += "Clicked on Entity_" + index + " event: " + dataNodesLabels[i] + " at: " + timeStampList[i] + "\n";
 				}
 				if (window != null)
 					window.Repaint();

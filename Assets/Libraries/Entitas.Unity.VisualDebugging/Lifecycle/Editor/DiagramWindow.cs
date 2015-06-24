@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 
-public class DiagramWindow : EditorWindow , ClickResponder {
+public class DiagramWindow : EditorWindow {
 	LineChart entityDiagram;
  	GUIStyle boxStyle;
 	Vector2 scrollPos = Vector2.zero;
 	Vector2 scrollPos2 = Vector2.zero;
-	string scrollText = "";
+//	string scrollText = "";
 	bool showDiagram = false;
 
 	[MenuItem ("Entitas/ShowDiagram")]
@@ -36,7 +36,7 @@ public class DiagramWindow : EditorWindow , ClickResponder {
 			entityDiagram = new LineChart(this);
 		}
 		entityDiagram.drawControls();
-		entityDiagram.clickResponder = this;
+//		entityDiagram.clickResponder = this;
 
 		if(GUILayout.Button("Draw Chart")) {
 			if(showDiagram)
@@ -61,16 +61,16 @@ public class DiagramWindow : EditorWindow , ClickResponder {
 
 		EditorGUILayout.BeginHorizontal();
 			scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width( Screen.width), GUILayout.Height(Screen.height/3) );
-			GUILayout.Label(scrollText);
+			GUILayout.Label(entityDiagram.scrollText);
 			EditorGUILayout.EndScrollView();
 		EditorGUILayout.EndHorizontal();
 
 		if(GUILayout.Button("Clear")) {
-			scrollText = "Click on line point to view it\n";
+			entityDiagram.scrollText = "Click on line point to view it\n";
 		}
 	}
 	
-	public void Click(string label, float value, int index) {
-		scrollText += "Clicked on Entity_" + index + " event: " + label + " at: " + value + "\n";
-	}
+//	public void Click(string label, float value, int index) {
+//		scrollText += "Clicked on Entity_" + index + " event: " + label + " at: " + value + "\n";
+//	}
 }

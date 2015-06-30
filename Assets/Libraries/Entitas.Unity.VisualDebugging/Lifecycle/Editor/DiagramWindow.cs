@@ -14,20 +14,19 @@ public class DiagramWindow : EditorWindow {
 //	string scrollText = "";
 	bool showDiagram = false;
 
+
 	[MenuItem ("Entitas/ShowDiagram")]
     static void Init () {
         // Get existing open window or if none, make a new one:
 		DiagramWindow window = (DiagramWindow) EditorWindow.GetWindow (typeof (DiagramWindow));
-		
 		// Listen for moves
 		window.wantsMouseMove = true;
-	
 		// Create a style which loads a background image
 		window.boxStyle = new GUIStyle();
-		window.boxStyle.normal.background = (Texture2D) Resources.Load("Border", typeof(Texture2D));
+		window.boxStyle.normal.background = (Texture2D) Resources.Load("Black", typeof(Texture2D));
 		window.boxStyle.border = new RectOffset(32,32,32,32);
 		window.boxStyle.margin = new RectOffset(4,4,4,4);
-
+	
 		window.Focus();
     }
 	
@@ -51,8 +50,8 @@ public class DiagramWindow : EditorWindow {
 			entityDiagram.Update();
 		}
 		
-		if(showDiagram)	{	
-			EditorGUILayout.BeginHorizontal();
+		if(showDiagram)	{
+			EditorGUILayout.BeginHorizontal(boxStyle);
 			scrollPos2 = EditorGUILayout.BeginScrollView(scrollPos2, GUILayout.Width( Screen.width), GUILayout.Height(Screen.height/3) );
 			entityDiagram.DrawChart();
 			EditorGUILayout.EndScrollView();

@@ -9,11 +9,13 @@ public class LogWriter {
 	private static Queue<Log> logQueue;
 	private static string logDir = "Assets/Logs/";
 	private static string logFile;
-	private static int queueSize = int.Parse("10");
+	private static int queueSize = 10;
+	private static DateTime startAppTime;
 
 	private LogWriter() {
 		int count = Directory.GetFiles(logDir,"*.txt").Length;
 		logFile = "TestLog(" + count + ").txt";
+		startAppTime = DateTime.UtcNow;
 	}
 	
 	public static LogWriter Instance {
@@ -26,7 +28,9 @@ public class LogWriter {
 		}
 	}
 	
-	public void WriteToLog(string message) {
+	public void WriteToLog(string message, DateTime time) {
+		double timePassed = (time - startAppTime).TotalMilliseconds;
+		message += " at " + timePassed;
 		Log logEntry = new Log(message);
 		logQueue.Enqueue(logEntry);
 				

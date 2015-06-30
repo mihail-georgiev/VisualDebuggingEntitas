@@ -39,7 +39,8 @@ public class LineChart {
 
 	public LineChart(EditorWindow window) {
 		readEntriesDataFromFile();
-		generateChartData();	
+		generateChartData();
+		timeFrameTo = lastRecordedTime;
 		int linesToDraw = entityEntries.Count;
 		float height = linesToDraw*20 +100;
 		this.window = window;
@@ -89,7 +90,7 @@ public class LineChart {
 	void drawAxis() {		
 		Handles.color = axisColor;
 		Handles.DrawLine (new Vector2 (chartBorderHorizontal, chartTop), new Vector2 (chartBorderHorizontal, chartFloor));
-		Handles.DrawLine (new Vector2 (chartBorderHorizontal, chartFloor), new Vector2 (Screen.width - chartBorderHorizontal, chartFloor));
+		Handles.DrawLine (new Vector2 (chartBorderHorizontal, chartFloor), new Vector2 (Screen.width, chartFloor));
 	}
 
 	void drawSectionsAndLabels() {

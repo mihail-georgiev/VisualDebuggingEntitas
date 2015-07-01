@@ -11,7 +11,6 @@ public class DiagramWindow : EditorWindow {
  	GUIStyle boxStyle;
 	Vector2 scrollPos = Vector2.zero;
 	Vector2 scrollPos2 = Vector2.zero;
-//	string scrollText = "";
 	bool showDiagram = false;
 
 	[MenuItem ("Entitas/ShowDiagram")]
@@ -36,7 +35,6 @@ public class DiagramWindow : EditorWindow {
 			entityDiagram = new LineChart(this);
 		}
 		entityDiagram.drawControls();
-//		entityDiagram.clickResponder = this;
 
 		if(GUILayout.Button("Draw Chart")) {
 			if(showDiagram)
@@ -69,8 +67,4 @@ public class DiagramWindow : EditorWindow {
 			entityDiagram.scrollText = "Click on line point to view it\n";
 		}
 	}
-	
-//	public void Click(string label, float value, int index) {
-//		scrollText += "Clicked on Entity_" + index + " event: " + label + " at: " + value + "\n";
-//	}
 }

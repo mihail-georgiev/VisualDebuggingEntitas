@@ -53,6 +53,6 @@ public class GameController : MonoBehaviour {
 	}
 
 	void OnApplicationQuit() {
-		AppUtils.writer.CloseLog();
+		LogWriter.Instance.CloseLog();
 	}
 }

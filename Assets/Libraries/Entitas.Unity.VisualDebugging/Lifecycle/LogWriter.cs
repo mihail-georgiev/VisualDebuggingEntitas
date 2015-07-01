@@ -6,29 +6,32 @@ using System.Threading;
 
 public class LogWriter {
 	private static LogWriter instance;
-	private static Queue<Log> logQueue;
+	private static Queue<string> logQueue;
 	private static string logDir = "Assets/Logs/";
-	private static string logFile;
-	private static int queueSize = int.Parse("10");
+	private static string logPath;
+	private static int queueSize = 10;
+	private static DateTime startAppTime;
 
 	private LogWriter() {
 		int count = Directory.GetFiles(logDir,"*.txt").Length;
-		logFile = "TestLog(" + count + ").txt";
+		startAppTime = DateTime.UtcNow;
+		logPath = logDir + startAppTime.ToString ("yyyy-MM-dd") + "_TestLog(" + count + ").txt";
 	}
 	
 	public static LogWriter Instance {
 		get {
 			if (instance == null) {
 				instance = new LogWriter();
-				logQueue = new Queue<Log>();
+				logQueue = new Queue<string>();
 			}
 			return instance;
 		}
 	}
 	
-	public void WriteToLog(string message) {
-		Log logEntry = new Log(message);
-		logQueue.Enqueue(logEntry);
+	public void WriteToLog(string message, DateTime time) {
+		double timePassed = (time - startAppTime).TotalMilliseconds;
+		message += " at " + timePassed;
+		logQueue.Enqueue(message);
 				
 		if (logQueue.Count >= queueSize) {
 			Thread t = new Thread(FlushLog);
@@ -36,16 +39,11 @@ public class LogWriter {
 		}
 	}
 
-		
 	private void FlushLog() {
-		Log entry;
-		string logPath = "";
 		List<string> entries = new List<string>();
 		lock(logQueue) {	
 			while (logQueue.Count > 0) {
-				entry = logQueue.Dequeue();
-				logPath = logDir + entry.LogDate + "_" + logFile;
-				entries.Add(entry.Message);
+				entries.Add(logQueue.Dequeue());
 			}
 		}
 
@@ -60,15 +58,5 @@ public class LogWriter {
 
 	public void CloseLog() {
 		FlushLog();
-	}
-}
-	
-public class Log {
-	public string Message { get; set; }
-	public string LogDate { get; set; }
-
-	public Log(string message) {
-		Message = message;
-		LogDate = DateTime.Now.ToString("yyyy-MM-dd");
 	}
 }

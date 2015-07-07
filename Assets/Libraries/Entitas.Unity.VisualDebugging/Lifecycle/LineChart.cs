@@ -17,8 +17,8 @@ public class LineChart {
 	float chartFloor ;
 	float chartTop;
 
-	float timeFrameFrom = 0f;
-	float timeFrameTo = 100f;
+	float timeFrameFrom;
+	float timeFrameTo;
 	float timeStep;
 
 	Dictionary<String, List<String>> entityEntries;
@@ -40,6 +40,7 @@ public class LineChart {
 	public LineChart(EditorWindow window) {
 		readEntriesDataFromFile();
 		generateChartData();
+		timeFrameFrom = 0f;
 		timeFrameTo = lastRecordedTime;
 		int linesToDraw = entityEntries.Count;
 		float height = linesToDraw*20 +100;

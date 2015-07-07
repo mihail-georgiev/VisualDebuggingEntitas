@@ -15,7 +15,6 @@ public class HitDetectionSystem : IExecuteSystem, ISetPool {
 		foreach (var asteroid in _asteroids.GetEntities()) {
 			Vector2 asteroidPos = new Vector2(asteroid.position.x, asteroid.position.y);
 			if(checkForHit(playerPos, asteroidPos))	{
-				Debug.Log (playerPos + " " + asteroidPos);
 				Debug.Log("You have been hit!");
 				#if UNITY_EDITOR
 				UnityEditor.EditorApplication.isPlaying = false;

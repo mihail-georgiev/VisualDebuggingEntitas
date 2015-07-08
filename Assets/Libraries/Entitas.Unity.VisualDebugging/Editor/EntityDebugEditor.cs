@@ -47,7 +47,7 @@ namespace Entitas.Unity.VisualDebugging {
             var indices = entity.GetComponentIndices();
             var components = entity.GetComponents();
             for (int i = 0; i < components.Length; i++) {
-                drawComponent(debugBehaviour, entity, indices[i], components[i]);
+                drawComponent(entity, indices[i], components[i]);
             }
             EditorGUILayout.EndVertical();
         }
@@ -78,7 +78,7 @@ namespace Entitas.Unity.VisualDebugging {
             }
         }
 
-        void drawComponent(EntityDebugBehaviour debugBehaviour, Entity entity, int index, IComponent component) {
+        void drawComponent(Entity entity, int index, IComponent component) {
             var componentType = component.GetType();
             var fields = componentType.GetFields(BindingFlags.Public | BindingFlags.Instance);
 

@@ -18,7 +18,7 @@ namespace Entitas.Unity.VisualDebugging {
 		[MenuItem ("Entitas/ShowDiagram")]
 	    static void Init () {
 	        // Get existing open window or if none, make a new one:
-			DiagramWindow window = (DiagramWindow) EditorWindow.GetWindow (typeof (DiagramWindow));
+			DiagramWindow window = (DiagramWindow) EditorWindow.GetWindow (typeof (DiagramWindow),false, "Entity Diagram");
 			// Listen for moves
 			window.wantsMouseMove = true;
 			// Create a style which loads a background image

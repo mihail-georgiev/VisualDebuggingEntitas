@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class PlayerInputSystem : IExecuteSystem, ISetPool {
 	Entity _player;
+	Pool _pool;
 
 	public void SetPool(Pool pool) {
 		_player = pool.playerEntity;
+		_pool = pool;
 	}
 	
 	public void Execute() {	
@@ -30,5 +32,18 @@ public class PlayerInputSystem : IExecuteSystem, ISetPool {
 
 		if(newSpeed != Vector2.zero || previousSpeed!= newSpeed)
 			_player.ReplacePlayerMove(newSpeed.x,newSpeed.y);
+
+		if (Input.GetKeyDown (KeyCode.Space))
+			shoot();
+}
+
+	void shoot(){
+		var playerPos = _player.position;
+
+		GameObject newBullet = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Bullet"));
+		Entity e = _pool.CreateEntity();
+		e.isBullet = true;
+		e.AddGameObject (newBullet);
+		e.AddPosition (playerPos.x + 15f, playerPos.y);
 	}
 }

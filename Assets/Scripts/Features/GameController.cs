@@ -33,10 +33,12 @@ public class GameController : MonoBehaviour {
 			_pool.CreateExecuteSystem<PlayerInputSystem>(),
 			_pool.CreateExecuteSystem<PlayerMoveSystem>(),
 			_pool.CreateExecuteSystem<SpawnAsteroidsSystem>(),
-			_pool.CreateExecuteSystem<AsteroidMoveSystem>(),
 			_pool.CreateExecuteSystem<HitDetectionSystem>(),
+			_pool.CreateExecuteSystem<AsteroidMoveSystem>(),
+			_pool.CreateExecuteSystem<BulletMoveSystem>(),
 			_pool.CreateExecuteSystem<RenderPositionSystem>(),
-			_pool.CreateExecuteSystem<DestroyAsteroidsSystem>()
+			_pool.CreateExecuteSystem<DestroyAsteroidsSystem>(),
+			_pool.CreateExecuteSystem<DestroyBulletSystem>()
 		};
 	}
 

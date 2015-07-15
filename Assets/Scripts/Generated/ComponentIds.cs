@@ -3,22 +3,26 @@ using System.Collections.Generic;
 public static class ComponentIds {
     public const int Asteroid = 0;
     public const int AsteroidMove = 1;
-    public const int DestroyAsteroid = 2;
-    public const int GameObject = 3;
-    public const int Player = 4;
-    public const int PlayerMove = 5;
-    public const int Position = 6;
+    public const int Bullet = 2;
+    public const int DestroyAsteroid = 3;
+    public const int DestroyBullet = 4;
+    public const int GameObject = 5;
+    public const int Player = 6;
+    public const int PlayerMove = 7;
+    public const int Position = 8;
 
-    public const int TotalComponents = 7;
+    public const int TotalComponents = 9;
 
     static readonly Dictionary<int, string> components = new Dictionary<int, string> {
         { 0, "Asteroid" },
         { 1, "AsteroidMove" },
-        { 2, "DestroyAsteroid" },
-        { 3, "GameObject" },
-        { 4, "Player" },
-        { 5, "PlayerMove" },
-        { 6, "Position" }
+        { 2, "Bullet" },
+        { 3, "DestroyAsteroid" },
+        { 4, "DestroyBullet" },
+        { 5, "GameObject" },
+        { 6, "Player" },
+        { 7, "PlayerMove" },
+        { 8, "Position" }
     };
 
     public static string IdToString(int componentId) {

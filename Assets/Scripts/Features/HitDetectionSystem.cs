@@ -4,18 +4,24 @@ using UnityEngine;
 public class HitDetectionSystem : IExecuteSystem, ISetPool {
 	Entity _player;
 	Group _asteroids;
+	Group _bullets;
 	
 	public void SetPool(Pool pool) {
 		_player = pool.playerEntity;
-		_asteroids = pool.GetGroup(Matcher.Asteroid);
+		_asteroids = pool.GetGroup(Matcher.AllOf(Matcher.Asteroid));
+		_bullets = pool.GetGroup (Matcher.AllOf(Matcher.Bullet));
 	}
 	
 	public void Execute() {
-		Vector2 playerPos = new Vector2 (_player.position.x, _player.position.y);
-		foreach (var asteroid in _asteroids.GetEntities()) {
-			Vector2 asteroidPos = new Vector2(asteroid.position.x, asteroid.position.y);
-			if(checkForHit(playerPos, asteroidPos))	{
-				Debug.Log("You have been hit!");
+		checkForBulletHittingAsteroid ();
+		checkForAsteroidHittingPlayer ();
+	}
+
+	void checkForAsteroidHittingPlayer ()
+	{
+		foreach (var asteroid in _asteroids.GetEntities ()) {
+			if (checkForHitWithPlayer (_player.position, asteroid.position)) {
+				Debug.Log ("You have been hit!");
 				#if UNITY_EDITOR
 				UnityEditor.EditorApplication.isPlaying = false;
 				#endif
@@ -23,17 +29,32 @@ public class HitDetectionSystem : IExecuteSystem, ISetPool {
 		}
 	}
 
-	bool checkForHit (Vector2 playerPos, Vector2 asteroidPos) {	
-		float pX1 = playerPos.x - 8f;
-		float pX2 = playerPos.x + 8f;
-		float pY1 = playerPos.y - 8f;
-		float pY2 = playerPos.y + 8f;
-		float ax1 = asteroidPos.x + 4f;
-		float ax2 = asteroidPos.x - 4f;
-		float ay1 = asteroidPos.y + 4f;
-		float ay2 = asteroidPos.y - 4f;
-		if (((pX1 < ax1 && ax1 < pX2) || (pX1 < ax2 && ax2 < pX2)) 
-			&& ((pY1 < ay1 && ay1 < pY2) || (pY1 < ay2 && ay2 < pY2)))
+	void checkForBulletHittingAsteroid(){	
+		foreach(var asteroid in _asteroids.GetEntities()){
+			foreach (var bullet in _bullets.GetEntities()){
+				if(checkForHitWithBullet(bullet.position, asteroid.position)){
+					bullet.isDestroyBullet = true;
+					asteroid.isDestroyAsteroid = true;
+				}
+			}
+		}
+	}
+
+	bool checkForHitWithPlayer (PositionComponent playerPos, PositionComponent asteroidPos) {	
+		Rect playerArea = new Rect (playerPos.x, playerPos.y + 6, 10, 12);
+		Rect asteroidArea = new Rect (asteroidPos.x - 4, asteroidPos.y + 4, 8, 8);
+
+		if(playerArea.Overlaps(asteroidArea))
+			return true;
+		else 
+			return false;
+	}
+
+	bool checkForHitWithBullet (PositionComponent bulletPos, PositionComponent asteroidPos) {
+		Rect bulletArea = new Rect (bulletPos.x - 3, bulletPos.y + 3, 6, 6);
+		Rect asteroidArea = new Rect (asteroidPos.x - 4, asteroidPos.y + 4, 8, 8);
+
+		if(bulletArea.Overlaps(asteroidArea))
 			return true;
 		else 
 			return false;

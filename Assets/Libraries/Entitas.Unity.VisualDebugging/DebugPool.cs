@@ -29,7 +29,7 @@ namespace Entitas.Unity.VisualDebugging {
 
         public override Entity CreateEntity() {
             var entity = base.CreateEntity();
-			LogWriter.Instance.WriteToLog("Entity_" + entity._creationIndex + ": created", System.DateTime.UtcNow);
+			LogWriter.Instance.WriteToLog("Entity_" + entity._creationIndex + ":  -> created, ", System.DateTime.UtcNow);
             addDebugComponent(entity);
             updateName();
 
@@ -39,7 +39,7 @@ namespace Entitas.Unity.VisualDebugging {
         public override void DestroyEntity(Entity entity) {
             var debugComponent = (DebugComponent)entity.GetComponent(_debugIndex);
             debugComponent.debugBehaviour.DestroyBehaviour();
-			LogWriter.Instance.WriteToLog("Entity_" + entity._creationIndex + ": destroyed", System.DateTime.UtcNow);
+			LogWriter.Instance.WriteToLog("Entity_" + entity._creationIndex + ":  -> destroyed, ", System.DateTime.UtcNow);
 			base.DestroyEntity(entity);
             updateName();
         }

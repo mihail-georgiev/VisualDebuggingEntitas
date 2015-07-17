@@ -41,14 +41,9 @@ namespace Entitas.Unity.VisualDebugging {
 					showDiagram = false;
 				else {
 					showDiagram = true;
-					entityDiagram.Update();
 				}
 			}
 
-			if(GUILayout.Button("Update Chart")) {
-				entityDiagram.Update();
-			}
-			
 			if(showDiagram)	{
 				EditorGUILayout.BeginHorizontal(boxStyle);
 				scrollPos2 = EditorGUILayout.BeginScrollView(scrollPos2, GUILayout.Width( Screen.width), GUILayout.Height(Screen.height/3) );

@@ -96,13 +96,7 @@ namespace Entitas.Unity.VisualDebugging {
 				drawSectionsAndLabels();
 			}
 		}
-
-		public void Update() {
-//			internTimeFrom = timeFrameFrom;
-//			internTimeTo = timeFrameTo;
-//			timeStep = (timeFrameTo-timeFrameFrom)/chartSections;
-		}
-
+	
 		void creteChartRect() {
 			Rect rect = GUILayoutUtility.GetRect (Screen.width, windowHeight);
 			chartTop = rect.y + chartBorderVertikal;
@@ -126,9 +120,20 @@ namespace Entitas.Unity.VisualDebugging {
 			for(int i =0; i<sortedEntityData.Length;i++)
 			{
 				Handles.DrawLine (new Vector2 (chartBorderHorizontal, -(i+1)*20+chartFloor), new Vector2 (Screen.width, -(i+1)*20+chartFloor));
+				//colect components
+				string compList = "";
+				foreach(var comp in sortedEntityData[i].Keys){
+					compList+= comp + "\n";
+				}
+				//draw enitity line labels in front
+				GUIStyle colorStyle = new GUIStyle ();
+				colorStyle.normal.textColor = Color.white;
+				Rect labelRect = new Rect (1, -(i+1)*20+chartFloor - 8, 100, 16);
+//				sortedEntityData[i].Keys.ToString();
+				GUI.Label (labelRect, new GUIContent("Entity_" + i,compList), colorStyle);
 			}
 		}
-
+		//
 		void drawSectionsAndLabels() {
 			GUIStyle centeredStyle = new GUIStyle();
 			centeredStyle.alignment = TextAnchor.UpperCenter;
@@ -191,12 +196,25 @@ namespace Entitas.Unity.VisualDebugging {
 				{
 					for(int i=0; i<entitiesToDisplay.Count; i++){
 						int entIndex = entitiesToDisplay[i];
-						//continue hier ... get the entity and display the components
+						var temp = sortedEntityData[entIndex];
+						int colr = 0;
+						foreach(var c in comp){
+							Handles.color = colors[colr++];
+							if(colr> colors.Count-1)
+								colr = 0;
+							var list = temp[c];
+							foreach(var l in list){
+								float timeStamp = float.Parse(l.Item2);
+								if(timeStamp>= timeFrameBeginn && timeStamp<=timeFrameEnd){
+									float centerX = chartBorderHorizontal + ((timeStamp-timeFrameBeginn)/(timeFrameEnd-timeFrameBeginn))*(Screen.width - chartBorderHorizontal);
+									float centerY = -(entIndex+1)*20+chartFloor;
+									Handles.DrawSolidDisc(new Vector2(centerX,centerY), Vector3.forward, pipRadius);
+								}
+							}
+						}
 					}
 				}
 			}
-
-
 		}
 
 
@@ -296,8 +314,6 @@ namespace Entitas.Unity.VisualDebugging {
 				}
 			}
 		}
-
-
 		
 		void generateChartData() {	
 			newStuff();

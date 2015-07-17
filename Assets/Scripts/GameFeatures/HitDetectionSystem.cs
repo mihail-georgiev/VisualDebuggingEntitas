@@ -2,14 +2,17 @@
 using UnityEngine;
 
 public class HitDetectionSystem : IExecuteSystem, ISetPool {
-	Entity _player;
+	Entity _player, _score, _stopGameEntity;
 	Group _asteroids;
 	Group _bullets;
+	Pool _pool;
 	
 	public void SetPool(Pool pool) {
 		_player = pool.playerEntity;
 		_asteroids = pool.GetGroup(Matcher.AllOf(Matcher.Asteroid));
 		_bullets = pool.GetGroup (Matcher.AllOf(Matcher.Bullet));
+		_score = pool.scoreEntity;
+		_stopGameEntity = pool.CreateEntity();
 	}
 	
 	public void Execute() {
@@ -22,9 +25,7 @@ public class HitDetectionSystem : IExecuteSystem, ISetPool {
 		foreach (var asteroid in _asteroids.GetEntities ()) {
 			if (checkForHitWithPlayer (_player.position, asteroid.position)) {
 				Debug.Log ("You have been hit!");
-				#if UNITY_EDITOR
-				UnityEditor.EditorApplication.isPlaying = false;
-				#endif
+				_stopGameEntity.isStopGame = true;
 			}
 		}
 	}
@@ -54,8 +55,10 @@ public class HitDetectionSystem : IExecuteSystem, ISetPool {
 		Rect bulletArea = new Rect (bulletPos.x - 3, bulletPos.y + 3, 6, 6);
 		Rect asteroidArea = new Rect (asteroidPos.x - 4, asteroidPos.y + 4, 8, 8);
 
-		if(bulletArea.Overlaps(asteroidArea))
+		if(bulletArea.Overlaps(asteroidArea)){
+			_score.ReplaceScore(_score.score.score + 10);
 			return true;
+		}
 		else 
 			return false;
 	}

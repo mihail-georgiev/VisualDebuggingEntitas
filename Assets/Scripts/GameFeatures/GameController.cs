@@ -10,6 +10,9 @@ public class GameController : MonoBehaviour {
 	IStartSystem[] _startSystems;
 	IExecuteSystem[] _executeSystems;
 
+	[HideInInspector]
+	public bool runSystems = true;
+
 	void Start () {
 		#if (UNITY_EDITOR)
 		_pool = new DebugPool(ComponentIds.TotalComponents);
@@ -24,7 +27,7 @@ public class GameController : MonoBehaviour {
 
 	void createStartSystems () {
 		_startSystems = new [] {
-			_pool.CreateStartSystem<CreatePlayerSystem>(),
+			_pool.CreateStartSystem<InitGameSystem>(),
 		};
 	}
 
@@ -34,11 +37,13 @@ public class GameController : MonoBehaviour {
 			_pool.CreateExecuteSystem<PlayerMoveSystem>(),
 			_pool.CreateExecuteSystem<SpawnAsteroidsSystem>(),
 			_pool.CreateExecuteSystem<HitDetectionSystem>(),
+			_pool.CreateExecuteSystem<ScoreSystem>(),
 			_pool.CreateExecuteSystem<AsteroidMoveSystem>(),
 			_pool.CreateExecuteSystem<BulletMoveSystem>(),
 			_pool.CreateExecuteSystem<RenderPositionSystem>(),
 			_pool.CreateExecuteSystem<DestroyAsteroidsSystem>(),
-			_pool.CreateExecuteSystem<DestroyBulletSystem>()
+			_pool.CreateExecuteSystem<DestroyBulletSystem>(),
+			_pool.CreateExecuteSystem<StopGameSystem>()
 		};
 	}
 
@@ -49,12 +54,15 @@ public class GameController : MonoBehaviour {
 	}
 
 	void Update () {
-		foreach (var system in _executeSystems) {
-			system.Execute();
+		if(runSystems){
+			foreach (var system in _executeSystems) {
+				system.Execute();
+			}
 		}
 	}
 
 	void OnApplicationQuit() {
+		Debug.Log("got called");
 		LogWriter.Instance.CloseLog();
 	}
 }

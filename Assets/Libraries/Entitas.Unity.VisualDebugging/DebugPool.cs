@@ -37,14 +37,14 @@ namespace Entitas.Unity.VisualDebugging {
         }
 
         public override void DestroyEntity(Entity entity) {
+			LogWriter.Instance.WriteToLog("Entity_" + entity._creationIndex + ":  -> destroyed, ", System.DateTime.UtcNow);
             var debugComponent = (DebugComponent)entity.GetComponent(_debugIndex);
             debugComponent.debugBehaviour.DestroyBehaviour();
-			LogWriter.Instance.WriteToLog("Entity_" + entity._creationIndex + ":  -> destroyed, ", System.DateTime.UtcNow);
 			base.DestroyEntity(entity);
             updateName();
-        }
+	}
 
-        public override void DestroyAllEntities() {
+		public override void DestroyAllEntities() {
             base.DestroyAllEntities();
             if (_entitiesContainer != null) {
                 Object.Destroy(_entitiesContainer.gameObject);

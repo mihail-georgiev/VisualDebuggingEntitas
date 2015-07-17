@@ -10,8 +10,10 @@ public static class ComponentIds {
     public const int Player = 6;
     public const int PlayerMove = 7;
     public const int Position = 8;
+    public const int Score = 9;
+    public const int StopGame = 10;
 
-    public const int TotalComponents = 9;
+    public const int TotalComponents = 11;
 
     static readonly Dictionary<int, string> components = new Dictionary<int, string> {
         { 0, "Asteroid" },
@@ -22,7 +24,9 @@ public static class ComponentIds {
         { 5, "GameObject" },
         { 6, "Player" },
         { 7, "PlayerMove" },
-        { 8, "Position" }
+        { 8, "Position" },
+        { 9, "Score" },
+        { 10, "StopGame" }
     };
 
     public static string IdToString(int componentId) {

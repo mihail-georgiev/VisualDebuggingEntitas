@@ -62,7 +62,6 @@ public class GameController : MonoBehaviour {
 	}
 
 	void OnApplicationQuit() {
-		Debug.Log("got called");
 		LogWriter.Instance.CloseLog();
 	}
 }

@@ -46,12 +46,13 @@ namespace Entitas.Unity.VisualDebugging {
 				while (logQueue.Count > 0) {
 					entries.Add(logQueue.Dequeue());
 				}
-			}
+			
 
-			foreach(string message in entries) {
-				using (FileStream fs = File.Open(logPath, FileMode.Append, FileAccess.Write)) {
-					using (StreamWriter log = new StreamWriter(fs)) {
-						log.WriteLine(message);
+				foreach(string message in entries) {
+					using (FileStream fs = File.Open(logPath, FileMode.Append, FileAccess.Write)) {
+						using (StreamWriter log = new StreamWriter(fs)) {
+							log.WriteLine(message);
+						}
 					}
 				}
 			}

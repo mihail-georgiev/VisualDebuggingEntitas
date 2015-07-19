@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEditor;
+
 public class ChangeScene : MonoBehaviour {
 
 	public void StartGame(){

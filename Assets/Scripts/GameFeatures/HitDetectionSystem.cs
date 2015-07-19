@@ -12,6 +12,7 @@ public class HitDetectionSystem : IExecuteSystem, ISetPool {
 		_asteroids = pool.GetGroup(Matcher.AllOf(Matcher.Asteroid));
 		_bullets = pool.GetGroup (Matcher.AllOf(Matcher.Bullet));
 		_score = pool.scoreEntity;
+		_pool = pool;
 	}
 	
 	public void Execute() {

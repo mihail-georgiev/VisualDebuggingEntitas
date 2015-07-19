@@ -18,7 +18,7 @@ public class SpawnAsteroidsSystem : IExecuteSystem, ISetPool {
 			e.AddPosition(posX,posY);
 			GameObject newAsteroid = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Asteroid"));
 			e.AddGameObject(newAsteroid);
-			e.AddAsteroidMove(Random.Range(0f,1f));
+			e.AddAsteroidSpeed(Random.Range(0f,1f));
 		}
 	}
 }

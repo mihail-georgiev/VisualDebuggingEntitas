@@ -9,7 +9,7 @@ public class PlayerMoveSystem : IReactiveSystem, ISetPool {
 	}
 
 	public IMatcher GetTriggeringMatcher() {
-		return Matcher.PlayerMove;
+		return Matcher.PlayerSpeed;
 	}
 	
 	public GroupEventType GetEventType() {
@@ -17,7 +17,7 @@ public class PlayerMoveSystem : IReactiveSystem, ISetPool {
 	}
 	
 	public void Execute(Entity[] entities) {
-		var speed = entities.SingleEntity().playerMove;
+		var speed = entities.SingleEntity().playerSpeed;
 		var pos = getNewClampedPlayerPos(_player.position.x, _player.position.y, speed.speedX, speed.speedY);
 		_player.ReplacePosition(pos.x, pos.y);
 	}

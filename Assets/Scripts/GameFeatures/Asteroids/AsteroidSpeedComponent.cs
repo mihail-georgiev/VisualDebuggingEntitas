@@ -1,6 +1,6 @@
 ﻿using Entitas;
 using Entitas.CodeGenerator;
 
-public class AsteroidMoveComponent : IComponent {
+public class AsteroidSpeedComponent : IComponent {
 	public float speed;
 }

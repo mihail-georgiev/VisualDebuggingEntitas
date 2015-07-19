@@ -10,12 +10,12 @@ public class AsteroidMoveSystem : IExecuteSystem, ISetPool {
 	
 	public void Execute() {
 		foreach(Entity e in _group.GetEntities()) {	
-			var move = e.asteroidMove;
+			var speed = e.asteroidSpeed;
 			var pos = e.position;
 			if(pos.x< -60f)
 				e.isDestroyAsteroid = true;
 			else 
-				e.ReplacePosition(pos.x - move.speed, pos.y); 
+				e.ReplacePosition(pos.x - speed.speed, pos.y); 
 		}
 	}
 }

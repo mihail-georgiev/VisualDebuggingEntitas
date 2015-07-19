@@ -13,7 +13,7 @@ public class InitGameSystem : IStartSystem, ISetPool {
 		playerEntity.isPlayer = true;
 		GameObject player = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Player"));
 		playerEntity.AddGameObject(player);
-		playerEntity.AddPlayerMove(0f,0f);
+		playerEntity.AddPlayerSpeed(0f,0f);
 		playerEntity.AddPosition(-55f,0f);
 
 		var scoreEntity = _pool.CreateEntity();

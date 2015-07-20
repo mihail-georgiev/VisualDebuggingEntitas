@@ -1,5 +1,4 @@
 ﻿using Entitas;
-using UnityEngine;
 
 public class AsteroidMoveSystem : IExecuteSystem, ISetPool {
 	Group _group;

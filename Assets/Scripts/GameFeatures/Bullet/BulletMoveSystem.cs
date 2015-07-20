@@ -1,5 +1,4 @@
 ﻿using Entitas;
-using UnityEngine;
 
 public class BulletMoveSystem : IExecuteSystem, ISetPool {
 	Group _bullets;

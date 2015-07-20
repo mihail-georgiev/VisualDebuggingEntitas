@@ -24,6 +24,7 @@ public class HitDetectionSystem : IExecuteSystem, ISetPool {
 		foreach(var asteroid in _asteroids.GetEntities()){
 			foreach (var bullet in _bullets.GetEntities()){
 				if(checkForHitWithBullet(bullet.position, asteroid.position)){
+					_score.ReplaceScore(_score.score.score + 10);
 					bullet.isDestroyBullet = true;
 					asteroid.isDestroyAsteroid = true;
 				}
@@ -35,7 +36,6 @@ public class HitDetectionSystem : IExecuteSystem, ISetPool {
 	{
 		foreach (var asteroid in _asteroids.GetEntities ()) {
 			if (checkForHitWithPlayer (_player.position, asteroid.position)) {
-				Debug.Log ("You have been hit!");
 				Entity stopGameEntity = _pool.CreateEntity();
 				stopGameEntity.isStopGame = true;
 			}
@@ -46,10 +46,8 @@ public class HitDetectionSystem : IExecuteSystem, ISetPool {
 		Rect bulletArea = new Rect (bulletPos.x - 3, bulletPos.y + 3, 6, 6);
 		Rect asteroidArea = new Rect (asteroidPos.x - 4, asteroidPos.y + 4, 8, 8);
 		
-		if(bulletArea.Overlaps(asteroidArea)){
-			_score.ReplaceScore(_score.score.score + 10);
+		if(bulletArea.Overlaps(asteroidArea))
 			return true;
-		}
 		else 
 			return false;
 	}

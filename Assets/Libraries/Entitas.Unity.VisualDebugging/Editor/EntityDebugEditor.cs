@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Entitas.Unity.VisualDebugging {
     [CustomEditor(typeof(EntityDebugBehaviour))]
     public class EntityDebugEditor : Editor {
-	ITypeDrawer[] _typeDrawers;
+	static ITypeDrawer[] _typeDrawers;
 
         void Awake() {
 		var types = Assembly.GetAssembly(typeof(EntityDebugEditor)).GetTypes();

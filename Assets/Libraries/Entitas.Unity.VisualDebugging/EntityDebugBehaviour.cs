@@ -8,12 +8,10 @@ namespace Entitas.Unity.VisualDebugging {
 
         Pool _pool;
         Entity _entity;
-        int _debugIndex;
 
-        public void Init(Pool pool, Entity entity, int debugIndex) {
+        public void Init(Pool pool, Entity entity) {
             _pool = pool;
             _entity = entity;
-            _debugIndex = debugIndex;
             _entity.OnComponentAdded += onEntityChanged;
             _entity.OnComponentRemoved += onEntityChanged;
 			_entity.OnComponentAdded += logOnComponentAdded;
@@ -34,27 +32,23 @@ namespace Entitas.Unity.VisualDebugging {
         }
 
         void onEntityChanged(Entity e, int index, IComponent component) {
-            if (!e.HasComponent(_debugIndex)) {
-                DestroyBehaviour();
-            } else {
                 updateName();
-            }
         }
 
-		void logOnComponentAdded(Entity e, int index, IComponent component) {
-			LogWriter.Instance.WriteToLog(component.DebugInfo(e.creationIndex, "added"), System.DateTime.UtcNow);
-		}
+	void logOnComponentAdded(Entity e, int index, IComponent component) {
+		LogWriter.Instance.WriteToLog(component.DebugInfo(e.creationIndex, "added"), System.DateTime.UtcNow);
+	}
 
-		void logOnComponentRemoved(Entity e, int index, IComponent component) {
-			LogWriter.Instance.WriteToLog(component.DebugInfo(e.creationIndex, "removed"),System.DateTime.UtcNow);
-		}
+	void logOnComponentRemoved(Entity e, int index, IComponent component) {
+		LogWriter.Instance.WriteToLog(component.DebugInfo(e.creationIndex, "removed"),System.DateTime.UtcNow);
+	}
 
-		void logOnComponentReplaced(Entity e, int index, IComponent component) {
-			LogWriter.Instance.WriteToLog(component.DebugInfo(e.creationIndex, "replaced"), System.DateTime.UtcNow);
-		}
+	void logOnComponentReplaced(Entity e, int index, IComponent component) {
+		LogWriter.Instance.WriteToLog(component.DebugInfo(e.creationIndex, "replaced"), System.DateTime.UtcNow);
+	}
 
-		void updateName() {
-			name = _entity.ToString();
-		}
+	void updateName() {
+		name = _entity.ToString();
+	}
     }
 }

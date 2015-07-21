@@ -26,5 +26,6 @@ public class StopGameSystem : IReactiveSystem, ISetPool{
 		GameObject.FindObjectOfType<GameController>().runSystems = false;
 		_gameOverPanel.SetActive(true);
 		_infoLabel.text = "Game Over\nYou got: " + _pool.score.score + " points!";
+		_pool.DestroyAllEntities();
 	}
 }

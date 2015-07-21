@@ -37,11 +37,11 @@ namespace Entitas.Unity.VisualDebugging {
         }
 
         public override void DestroyEntity(Entity entity) {
-			LogWriter.Instance.WriteToLog("Entity_" + entity._creationIndex + ":  -> destroyed, ", System.DateTime.UtcNow);
-            var debugComponent = (DebugComponent)entity.GetComponent(_debugIndex);
-            debugComponent.debugBehaviour.DestroyBehaviour();
-			base.DestroyEntity(entity);
-            updateName();
+		LogWriter.Instance.WriteToLog("Entity_" + entity._creationIndex + ":  -> destroyed, ", System.DateTime.UtcNow);
+            	var debugComponent = (DebugComponent)entity.GetComponent(_debugIndex);
+            	debugComponent.debugBehaviour.DestroyBehaviour();
+	    	base.DestroyEntity(entity);
+            	updateName();
 	}
 
 		public override void DestroyAllEntities() {
@@ -59,7 +59,7 @@ namespace Entitas.Unity.VisualDebugging {
 
         void addDebugComponent(Entity entity) {
             var debugBehaviour = new GameObject().AddComponent<EntityDebugBehaviour>();
-            debugBehaviour.Init(this, entity, _debugIndex);
+            debugBehaviour.Init(this, entity);
             debugBehaviour.transform.SetParent(_entitiesContainer, false);
             var debugComponent = new DebugComponent();
             debugComponent.debugBehaviour = debugBehaviour;

@@ -8,9 +8,9 @@ using UnityEditor;
 using UnityEngine;
 
 namespace Entitas.Unity.VisualDebugging {
-    [CustomEditor(typeof(EntityDebugBehaviour)), CanEditMultipleObjects]
+    [CustomEditor(typeof(EntityDebugBehaviour))]
     public class EntityDebugEditor : Editor {
-		static ITypeDrawer[] _typeDrawers;
+	ITypeDrawer[] _typeDrawers;
 
         void Awake() {
 		var types = Assembly.GetAssembly(typeof(EntityDebugEditor)).GetTypes();
@@ -21,15 +21,11 @@ namespace Entitas.Unity.VisualDebugging {
         }
 
         public override void OnInspectorGUI() {
-            if (targets.Length == 1) {
-                drawSingleTarget();
-            } else {
-                drawMultiTargets();
-            }
-            EditorUtility.SetDirty(target);
+                drawTarget();
+		EditorUtility.SetDirty(target);
         }
 
-        void drawSingleTarget() {
+        void drawTarget() {
             var debugBehaviour = (EntityDebugBehaviour)target;
             var pool = debugBehaviour.pool;
             var entity = debugBehaviour.entity;
@@ -52,31 +48,6 @@ namespace Entitas.Unity.VisualDebugging {
             EditorGUILayout.EndVertical();
         }
 
-        void drawMultiTargets() {
-            if (GUILayout.Button("Destroy selected entities")) {
-                foreach (var t in targets) {
-                    var debugBehaviour = (EntityDebugBehaviour)t;
-                    var pool = debugBehaviour.pool;
-                    var entity = debugBehaviour.entity;
-                    pool.DestroyEntity(entity);
-                }
-            }
-
-            EditorGUILayout.Space();
-
-            foreach (var t in targets) {
-                var debugBehaviour = (EntityDebugBehaviour)t;
-                var pool = debugBehaviour.pool;
-                var entity = debugBehaviour.entity;
-
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(entity.ToString());
-                if (GUILayout.Button("Destroy Entity")) {
-                    pool.DestroyEntity(entity);
-                }
-                EditorGUILayout.EndHorizontal();
-            }
-        }
 
         void drawComponent(Entity entity, int index, IComponent component) {
             var componentType = component.GetType();

@@ -36,15 +36,15 @@ namespace Entitas.Unity.VisualDebugging {
         }
 
 	void logOnComponentAdded(Entity e, int index, IComponent component) {
-		LogWriter.Instance.WriteToLog(component.DebugInfo(e.creationIndex, "added"), System.DateTime.UtcNow);
+		LogWriter.Instance.WriteToLog(component.DebugInfo(e.creationIndex, "added"));
 	}
 
 	void logOnComponentRemoved(Entity e, int index, IComponent component) {
-		LogWriter.Instance.WriteToLog(component.DebugInfo(e.creationIndex, "removed"),System.DateTime.UtcNow);
+		LogWriter.Instance.WriteToLog(component.DebugInfo(e.creationIndex, "removed"));
 	}
 
 	void logOnComponentReplaced(Entity e, int index, IComponent component) {
-		LogWriter.Instance.WriteToLog(component.DebugInfo(e.creationIndex, "replaced"), System.DateTime.UtcNow);
+		LogWriter.Instance.WriteToLog(component.DebugInfo(e.creationIndex, "replaced"));
 	}
 
 	void updateName() {

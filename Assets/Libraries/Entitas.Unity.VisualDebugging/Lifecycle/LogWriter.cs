@@ -29,8 +29,8 @@ namespace Entitas.Unity.VisualDebugging {
 			}
 		}
 		
-		public void WriteToLog(string message, DateTime time) {
-			double timePassed = (time - startAppTime).TotalMilliseconds;
+		public void WriteToLog(string message) {
+			double timePassed = (DateTime.UtcNow - startAppTime).TotalMilliseconds;
 			message += " at " + timePassed;
 			logQueue.Enqueue(message);
 					

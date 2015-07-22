@@ -62,21 +62,16 @@ namespace Entitas.Unity.VisualDebugging {
             EditorGUILayout.EndHorizontal();
 
             foreach (var field in fields) {
-	            var value = field.GetValue(component);
-				DrawAndSetElement(field.FieldType, field.Name, value,
-				                  entity, index, component, newValue => field.SetValue(component, newValue));
+		object value = field.GetValue(component);
+		var newValue = drawAndGetNewValue(field.FieldType, field.Name, value, entity, index, component);
+		if (didValueChange(value, newValue)) {
+			entity.WillRemoveComponent(index);
+			field.SetValue(component,newValue);
+			entity.ReplaceComponent(index, component);
+		}
             }
             EditorGUILayout.EndVertical();
         }
-
-	public static void DrawAndSetElement(Type type, string fieldName, object value, Entity entity, int index, IComponent component, Action<object> setValue) {
-		var newValue = DrawAndGetNewValue(type, fieldName, value, entity, index, component);
-		if (didValueChange(value, newValue)) {
-			entity.WillRemoveComponent(index);
-			setValue(newValue);
-			entity.ReplaceComponent(index, component);
-		}
-	}
 
 	static bool didValueChange(object value, object newValue) {
 		return (value == null && newValue != null) ||
@@ -85,11 +80,8 @@ namespace Entitas.Unity.VisualDebugging {
 				  !newValue.Equals(value)));
 	}
 
-	public static object DrawAndGetNewValue(Type type, string fieldName, object value, Entity entity, int index, IComponent component) {
-		if (!type.IsValueType) {
-			EditorGUILayout.BeginHorizontal();
-			EditorGUILayout.BeginVertical();
-		}
+	static object drawAndGetNewValue(Type type, string fieldName, object value, Entity entity, int index, IComponent component) {
+
 		var typeDrawer = getTypeDrawer(type);
 		if (typeDrawer != null) {
 			value = typeDrawer.DrawAndGetNewValue(type, fieldName, value, entity, index, component);
@@ -97,11 +89,6 @@ namespace Entitas.Unity.VisualDebugging {
 			drawUnsupportedType(type, fieldName, value);
 		}
 
-		if (!type.IsValueType) {
-			EditorGUILayout.EndVertical();
-			EditorGUILayout.EndHorizontal();
-		}
-			
 		return value;
 	}
 		

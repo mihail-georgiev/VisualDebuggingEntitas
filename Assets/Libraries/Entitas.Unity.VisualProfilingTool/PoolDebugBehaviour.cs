@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Entitas.Unity.VisualDebugging {
+namespace Entitas.Unity.VisualProfilingTool {
     public class PoolDebugBehaviour : MonoBehaviour {
         public DebugPool pool { get { return _pool; } }
 

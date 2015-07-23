@@ -1,16 +1,15 @@
 using System;
 using Entitas;
 using UnityEditor;
-using UnityEngine;
 
-namespace Entitas.Unity.VisualDebugging {
-    public class Vector2TypeDrawer : ITypeDrawer {
+namespace Entitas.Unity.VisualProfilingTool {
+    public class StringCustomDrawer : ICustomDrawer {
         public bool HandlesType(Type type) {
-            return type == typeof(Vector2);
+            return type == typeof(string);
         }
 
         public object DrawAndGetNewValue(Type type, string fieldName, object value, Entity entity, int index, IComponent component) {
-            return EditorGUILayout.Vector2Field(fieldName, (Vector2)value);
+            return EditorGUILayout.TextField(fieldName, (string)value);
         }
     }
 }

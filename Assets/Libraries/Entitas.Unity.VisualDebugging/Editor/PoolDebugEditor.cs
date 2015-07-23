@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Linq;
 
-namespace Entitas.Unity.VisualProfilingTool {
+namespace Entitas.Unity.VisualDebugging {
     [CustomEditor(typeof(PoolDebugBehaviour))]
     public class PoolDebugEditor : Editor {
 

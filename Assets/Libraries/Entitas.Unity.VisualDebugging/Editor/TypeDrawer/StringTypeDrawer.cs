@@ -2,14 +2,14 @@ using System;
 using Entitas;
 using UnityEditor;
 
-namespace Entitas.Unity.VisualProfilingTool {
-    public class IntCustomDrawer : ICustomDrawer {
+namespace Entitas.Unity.VisualDebugging {
+    public class StringTypeDrawer : ITypeDrawer {
         public bool HandlesType(Type type) {
-            return type == typeof(int);
+            return type == typeof(string);
         }
 
         public object DrawAndGetNewValue(Type type, string fieldName, object value, Entity entity, int index, IComponent component) {
-            return EditorGUILayout.IntField(fieldName, (int)value);
+            return EditorGUILayout.TextField(fieldName, (string)value);
         }
     }
 }

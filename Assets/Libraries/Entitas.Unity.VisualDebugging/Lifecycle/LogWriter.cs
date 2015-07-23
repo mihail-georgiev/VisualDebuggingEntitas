@@ -4,7 +4,7 @@ using System.Configuration;
 using System.IO;
 using System.Threading;
 
-namespace Entitas.Unity.VisualProfilingTool {
+namespace Entitas.Unity.VisualDebugging {
 	public class LogWriter {
 		private static LogWriter instance;
 		private static Queue<string> logQueue;

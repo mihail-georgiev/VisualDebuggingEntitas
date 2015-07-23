@@ -1,6 +1,6 @@
 ﻿using Entitas.CodeGenerator;
 
-namespace Entitas.Unity.VisualProfilingTool {
+namespace Entitas.Unity.VisualDebugging {
     [DontGenerate(false)]
     public class DebugComponent : IComponent {
         public EntityDebugBehaviour debugBehaviour;

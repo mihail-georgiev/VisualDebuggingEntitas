@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Entitas.Unity.VisualProfilingTool {
+namespace Entitas.Unity.VisualDebugging {
     public class DebugPool : Pool {
         public string name { get { return _name; } }
         public GameObject entitiesContainer { get { return _entitiesContainer.gameObject; } }

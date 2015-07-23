@@ -7,16 +7,16 @@ using Entitas.CodeGenerator;
 using UnityEditor;
 using UnityEngine;
 
-namespace Entitas.Unity.VisualDebugging {
+namespace Entitas.Unity.VisualProfilingTool {
     [CustomEditor(typeof(EntityDebugBehaviour))]
     public class EntityDebugEditor : Editor {
-	static ITypeDrawer[] _typeDrawers;
+	static ICustomDrawer[] _customDrawers;
 
         void Awake() {
 		var types = Assembly.GetAssembly(typeof(EntityDebugEditor)).GetTypes();
-		_typeDrawers = types
-			.Where(type => type.GetInterfaces().Contains(typeof(ITypeDrawer)))
-			.Select(type => (ITypeDrawer)Activator.CreateInstance(type))
+		_customDrawers = types
+			.Where(type => type.GetInterfaces().Contains(typeof(ICustomDrawer)))
+			.Select(type => (ICustomDrawer)Activator.CreateInstance(type))
 			.ToArray();
         }
 
@@ -82,9 +82,9 @@ namespace Entitas.Unity.VisualDebugging {
 
 	static object drawAndGetNewValue(Type type, string fieldName, object value, Entity entity, int index, IComponent component) {
 
-		var typeDrawer = getTypeDrawer(type);
-		if (typeDrawer != null) {
-			value = typeDrawer.DrawAndGetNewValue(type, fieldName, value, entity, index, component);
+		var customDrawer = getCustomDrawer(type);
+		if (customDrawer != null) {
+			value = customDrawer.DrawAndGetNewValue(type, fieldName, value, entity, index, component);
 		} else {
 			drawUnsupportedType(type, fieldName, value);
 		}
@@ -98,8 +98,8 @@ namespace Entitas.Unity.VisualDebugging {
             	EditorGUILayout.EndHorizontal();
         }
 
-	static ITypeDrawer getTypeDrawer(Type type) {
-		foreach (var drawer in _typeDrawers) {
+	static ICustomDrawer getCustomDrawer(Type type) {
+		foreach (var drawer in _customDrawers) {
 			if (drawer.HandlesType(type)) {
 				return drawer;
 			}

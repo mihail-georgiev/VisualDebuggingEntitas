@@ -2,8 +2,8 @@ using System;
 using Entitas;
 using UnityEditor;
 
-namespace Entitas.Unity.VisualDebugging {
-    public class UnityObjectTypeDrawer : ITypeDrawer {
+namespace Entitas.Unity.VisualProfilingTool {
+    public class UnityObjectCustomDrawer : ICustomDrawer {
         public bool HandlesType(Type type) {
             return type == typeof(UnityEngine.Object) ||
             type.IsSubclassOf(typeof(UnityEngine.Object));

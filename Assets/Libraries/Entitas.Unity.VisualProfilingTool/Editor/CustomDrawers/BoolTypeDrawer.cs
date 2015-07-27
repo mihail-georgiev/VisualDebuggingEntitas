@@ -3,7 +3,7 @@ using Entitas;
 using UnityEditor;
 
 namespace Entitas.Unity.VisualProfilingTool {
-    public class BoolCustomDrawer : ICustomDrawer {
+    public class BoolTypeDrawer : ITypeDrawer {
         public bool HandlesType(Type type) {
             return type == typeof(bool);
         }

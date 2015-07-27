@@ -3,7 +3,7 @@ using Entitas;
 using UnityEditor;
 
 namespace Entitas.Unity.VisualProfilingTool {
-    public class FloatCustomDrawer : ICustomDrawer {
+	public class FloatTypeDrawer : ITypeDrawer {
         public bool HandlesType(Type type) {
             return type == typeof(float);
         }

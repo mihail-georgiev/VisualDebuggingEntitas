@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace Entitas.Unity.VisualProfilingTool {
-    public class Vector2CustomDrawer : ICustomDrawer {
+	public class Vector2TypeDrawer : ITypeDrawer {
         public bool HandlesType(Type type) {
             return type == typeof(Vector2);
         }

@@ -3,7 +3,7 @@
 public class ChangeScene : MonoBehaviour {
 
 	public void StartGame(){
-		Application.LoadLevel("TestScene");
+		Application.LoadLevel("Game");
 	}
 	public void QuitGame(){
 		Application.Quit();

@@ -50,13 +50,7 @@ namespace Entitas.Unity.VisualProfilingTool {
                 Object.Destroy(_entitiesContainer.gameObject);
             }
         }
-
-        public override Group GetGroup(IMatcher matcher) {
-            var group = base.GetGroup(matcher);
-            updateName();
-            return group;
-        }
-
+	
         void addDebugComponent(Entity entity) {
             var debugBehaviour = new GameObject().AddComponent<EntityDebugBehaviour>();
             debugBehaviour.Init(this, entity);
